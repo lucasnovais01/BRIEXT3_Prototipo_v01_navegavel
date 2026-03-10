@@ -1,1 +1,2022 @@
+<!doctype html>
+<html lang="pt-BR" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birigui Turismo IG</title><!-- ============================================
+         BIRIGUI TURISMO IG - Plataforma de Turismo
+         Projeto Acadêmico IFSP Birigui
+         ============================================ --> <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script><!-- Font Awesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><!-- Google Fonts: Merriweather (títulos) + Lato (corpo) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&amp;family=Merriweather:wght@400;700;900&amp;display=swap" rel="stylesheet"><!-- Element SDK -->
+  <script src="/_sdk/element_sdk.js"></script><!-- Configuração do Tailwind com cores personalizadas -->
+  <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'azul-noite': '#1A3C5E',
+                        'ambar': '#F5A623',
+                        'ambar-claro': '#FDF0D5',
+                        'verde': '#2D7A3A',
+                        'creme': '#F9F5F0',
+                    },
+                    fontFamily: {
+                        'titulo': ['Merriweather', 'serif'],
+                        'corpo': ['Lato', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'padrao': '10px',
+                    }
+                }
+            }
+        }
+    </script>
+  <style>
+        /* ========== ESTILOS GLOBAIS ========== */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Lato', sans-serif;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Merriweather', serif;
+        }
+        
+        /* ========== ANIMAÇÕES ========== */
+        .menu-mobile {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            opacity: 0;
+        }
+        
+        .menu-mobile.aberto {
+            max-height: 400px;
+            opacity: 1;
+        }
+        
+        /* ========== MODAL ========== */
+        .modal-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .modal-overlay.visivel {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-conteudo {
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal-overlay.visivel .modal-conteudo {
+            transform: scale(1);
+        }
+        
+        /* ========== PAINEL DETALHES ========== */
+        .painel-detalhes {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .painel-detalhes.aberto {
+            max-height: 500px;
+        }
+        
+        /* ========== HOVER EFFECTS ========== */
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* ========== BOTÕES ========== */
+        .botao-primario {
+            transition: all 0.3s ease;
+        }
+        
+        .botao-outline {
+            transition: all 0.3s ease;
+        }
+    </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-creme text-gray-800 font-corpo"><!-- ============================================
+         HEADER - Navegação Principal (Fixo)
+         ============================================ -->
+  <header id="cabecalho" class="fixed top-0 left-0 right-0 bg-white shadow-md h-16 z-50">
+   <div class="max-w-7xl mx-auto px-4 h-full flex items-center justify-between"><!-- Logo e Nome do Site --> <a href="#" class="flex items-center gap-2 grupo-logo" onclick="mostrarPagina('home', event)"> <i class="fa-solid fa-shoe-prints text-2xl text-ambar"></i> <span id="nome-site" class="font-titulo font-bold text-azul-noite text-lg md:text-xl">Birigui Turismo IG</span> </a> <!-- Menu Desktop (visível em telas >= 768px) -->
+    <nav class="hidden md:flex items-center gap-6"><a href="#home" class="text-azul-noite hover:text-ambar transition-colors font-medium" onclick="mostrarPagina('home', event)">Home</a> <a href="#igs" class="text-azul-noite hover:text-ambar transition-colors font-medium" onclick="mostrarPagina('igs', event)">IGs</a> <a href="#empresas" class="text-azul-noite hover:text-ambar transition-colors font-medium" onclick="mostrarPagina('empresas', event)">Empresas</a> <a href="#eventos" class="text-azul-noite hover:text-ambar transition-colors font-medium" onclick="mostrarPagina('eventos', event)">Eventos</a> <a href="#roteiros" class="text-azul-noite hover:text-ambar transition-colors font-medium" onclick="mostrarPagina('roteiros', event)">Roteiros</a> <a href="#galeria" class="text-azul-noite hover:text-ambar transition-colors font-medium" onclick="mostrarPagina('galeria', event)">Galeria</a> <a href="#planejamento" class="text-azul-noite hover:text-ambar transition-colors font-medium" onclick="mostrarPagina('planejamento', event)">Planejamento</a>
+    </nav><!-- Botão Acesso Empresas (Desktop) --> <button class="hidden md:block botao-outline border-2 border-azul-noite text-azul-noite px-4 py-2 rounded-padrao font-medium hover:bg-azul-noite hover:text-white"> Acesso Empresas </button> <!-- Botão Menu Hambúrguer (Mobile) --> <button id="botao-menu" class="md:hidden text-azul-noite text-2xl p-2" onclick="alternarMenu()" aria-label="Abrir menu"> <i class="fa-solid fa-bars"></i> </button>
+   </div><!-- Menu Mobile (oculto por padrão) -->
+   <div id="menu-mobile" class="menu-mobile md:hidden bg-white border-t border-gray-100">
+    <nav class="flex flex-col px-4 py-2"><a href="#home" class="py-3 text-azul-noite hover:text-ambar border-b border-gray-100" onclick="mostrarPagina('home', event)">Home</a> <a href="#igs" class="py-3 text-azul-noite hover:text-ambar border-b border-gray-100" onclick="mostrarPagina('igs', event)">IGs</a> <a href="#empresas" class="py-3 text-azul-noite hover:text-ambar border-b border-gray-100" onclick="mostrarPagina('empresas', event)">Empresas</a> <a href="#eventos" class="py-3 text-azul-noite hover:text-ambar border-b border-gray-100" onclick="mostrarPagina('eventos', event)">Eventos</a> <a href="#roteiros" class="py-3 text-azul-noite hover:text-ambar border-b border-gray-100" onclick="mostrarPagina('roteiros', event)">Roteiros</a> <a href="#galeria" class="py-3 text-azul-noite hover:text-ambar border-b border-gray-100" onclick="mostrarPagina('galeria', event)">Galeria</a> <a href="#planejamento" class="py-3 text-azul-noite hover:text-ambar border-b border-gray-100" onclick="mostrarPagina('planejamento', event)">Planejamento</a> <button class="mt-3 mb-2 botao-outline border-2 border-azul-noite text-azul-noite px-4 py-2 rounded-padrao font-medium hover:bg-azul-noite hover:text-white"> Acesso Empresas </button>
+    </nav>
+   </div>
+  </header><!-- Espaçador para compensar header fixo -->
+  <div class="h-16"></div><!-- ============================================
+         MAIN - Conteúdo Principal
+         ============================================ -->
+  <main><!-- ========== SEÇÃO HOME - Controlada via JS ========== -->
+   <div id="pagina-home">
+    <section id="hero" class="relative h-[500px] flex items-center justify-center text-center" style="background: linear-gradient(135deg, #1A3C5E 0%, #2D7A3A 100%);"><!-- Overlay decorativo -->
+     <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-10 left-10 w-32 h-32 border-4 border-white rounded-full"></div>
+      <div class="absolute bottom-20 right-20 w-24 h-24 border-4 border-white rounded-full"></div>
+      <div class="absolute top-1/2 left-1/4 w-16 h-16 border-2 border-white rounded-full"></div>
+     </div>
+     <div class="relative z-10 px-4 max-w-4xl mx-auto">
+      <h1 id="titulo-hero" class="font-titulo font-bold text-white text-4xl md:text-5xl lg:text-6xl mb-4 drop-shadow-lg">Descubra Birigui-SP</h1>
+      <p id="subtitulo-hero" class="text-white/90 text-lg md:text-xl lg:text-2xl mb-8 max-w-2xl mx-auto">Polo do Calçado Infantil e destino turístico do Noroeste Paulista</p><a href="#roteiros" class="inline-block botao-primario bg-ambar text-azul-noite font-bold px-8 py-4 rounded-padrao text-lg shadow-lg hover:bg-yellow-400 hover:scale-105"> <i class="fa-solid fa-route mr-2"></i> Explorar Roteiros </a>
+     </div><!-- Ondas decorativas no fundo -->
+     <div class="absolute bottom-0 left-0 right-0">
+      <svg viewbox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#F9F5F0" />
+      </svg>
+     </div>
+    </section><!-- ========== SEÇÃO IGs EM DESTAQUE ========== -->
+    <section id="igs" class="py-16 px-4 bg-creme">
+     <div class="max-w-7xl mx-auto">
+      <h2 class="font-titulo font-bold text-azul-noite text-3xl md:text-4xl text-center mb-4">Nossas Indicações Geográficas</h2>
+      <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">Conheça os produtos e serviços que fazem de Birigui uma referência nacional</p><!-- Grid de Cards das IGs -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"><!-- Card IG 1 - Calçado Infantil -->
+       <article class="card-hover bg-white rounded-padrao shadow-md overflow-hidden border-t-4 border-ambar">
+        <div class="p-6">
+         <div class="flex items-center gap-3 mb-4">
+          <div class="w-14 h-14 bg-ambar/20 rounded-full flex items-center justify-center"><i class="fa-solid fa-shoe-prints text-2xl text-ambar"></i>
+          </div>
+          <div>
+           <h3 class="font-titulo font-bold text-azul-noite text-lg">Calçado Infantil de Birigui</h3><span class="inline-block bg-verde/20 text-verde text-xs font-bold px-2 py-1 rounded-full"> Indicação de Procedência </span>
+          </div>
+         </div>
+         <p class="text-gray-600 text-sm mb-4 line-clamp-2">Reconhecido nacionalmente pela qualidade e tradição na fabricação de calçados infantis, com mais de 80 anos de história.</p><button class="w-full botao-primario bg-azul-noite text-white py-2 rounded-padrao font-medium hover:bg-azul-noite/90"> Saiba mais </button>
+        </div>
+       </article><!-- Card IG 2 - Artesanato Regional -->
+       <article class="card-hover bg-white rounded-padrao shadow-md overflow-hidden border-t-4 border-ambar">
+        <div class="p-6">
+         <div class="flex items-center gap-3 mb-4">
+          <div class="w-14 h-14 bg-ambar/20 rounded-full flex items-center justify-center"><i class="fa-solid fa-hands text-2xl text-ambar"></i>
+          </div>
+          <div>
+           <h3 class="font-titulo font-bold text-azul-noite text-lg">Artesanato do Noroeste Paulista</h3><span class="inline-block bg-verde/20 text-verde text-xs font-bold px-2 py-1 rounded-full"> Indicação de Procedência </span>
+          </div>
+         </div>
+         <p class="text-gray-600 text-sm mb-4 line-clamp-2">Peças únicas em couro, palha e materiais regionais que representam a cultura e tradição do interior paulista.</p><button class="w-full botao-primario bg-azul-noite text-white py-2 rounded-padrao font-medium hover:bg-azul-noite/90"> Saiba mais </button>
+        </div>
+       </article><!-- Card IG 3 - Gastronomia Regional -->
+       <article class="card-hover bg-white rounded-padrao shadow-md overflow-hidden border-t-4 border-ambar">
+        <div class="p-6">
+         <div class="flex items-center gap-3 mb-4">
+          <div class="w-14 h-14 bg-ambar/20 rounded-full flex items-center justify-center"><i class="fa-solid fa-utensils text-2xl text-ambar"></i>
+          </div>
+          <div>
+           <h3 class="font-titulo font-bold text-azul-noite text-lg">Sabores do Tietê</h3><span class="inline-block bg-verde/20 text-verde text-xs font-bold px-2 py-1 rounded-full"> Denominação de Origem </span>
+          </div>
+         </div>
+         <p class="text-gray-600 text-sm mb-4 line-clamp-2">Gastronomia típica regional com ingredientes locais, destacando pratos à base de peixes do Rio Tietê.</p><button class="w-full botao-primario bg-azul-noite text-white py-2 rounded-padrao font-medium hover:bg-azul-noite/90"> Saiba mais </button>
+        </div>
+       </article>
+      </div>
+     </div>
+    </section><!-- ========== SEÇÃO PRÓXIMOS EVENTOS ========== -->
+    <section id="eventos" class="py-16 px-4 bg-white">
+     <div class="max-w-7xl mx-auto">
+      <h2 class="font-titulo font-bold text-azul-noite text-3xl md:text-4xl text-center mb-4">Próximos Eventos</h2>
+      <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">Fique por dentro dos eventos que movimentam o turismo em Birigui</p><!-- Container dos Cards de Eventos (renderizado via JS) -->
+      <div id="container-eventos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"><!-- Cards serão inseridos aqui via JavaScript -->
+      </div>
+     </div>
+    </section><!-- ========== SEÇÃO ROTEIROS EM DESTAQUE ========== -->
+    <section id="roteiros" class="py-16 px-4 bg-creme">
+     <div class="max-w-7xl mx-auto">
+      <h2 class="font-titulo font-bold text-azul-noite text-3xl md:text-4xl text-center mb-4">Roteiros Turísticos</h2>
+      <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">Experiências planejadas para você conhecer o melhor de Birigui e região</p><!-- Cards Horizontais de Roteiros -->
+      <div class="space-y-6"><!-- Roteiro 1 -->
+       <article class="card-hover bg-white rounded-padrao shadow-md overflow-hidden flex flex-col md:flex-row"><!-- Imagem Placeholder -->
+        <div class="md:w-1/3 h-48 md:h-auto bg-gradient-to-br from-azul-noite to-verde flex items-center justify-center"><i class="fa-solid fa-industry text-6xl text-white/50"></i>
+        </div><!-- Conteúdo -->
+        <div class="md:w-2/3 p-6">
+         <div class="flex flex-wrap items-center gap-2 mb-2">
+          <h3 class="font-titulo font-bold text-azul-noite text-xl">Rota das Fábricas de Calçados</h3><span class="bg-verde text-white text-xs font-bold px-2 py-1 rounded-full"> <i class="fa-solid fa-shoe-prints mr-1"></i> IG Calçado Infantil </span>
+         </div>
+         <p class="text-gray-600 text-sm mb-4 line-clamp-2">Visite as principais indústrias calçadistas de Birigui, conheça o processo de produção e a história do polo industrial que fez a cidade crescer.</p>
+         <div class="flex flex-wrap items-center gap-4 mb-4"><span class="text-sm text-gray-500"> <i class="fa-regular fa-clock text-ambar mr-1"></i> Duração: 4 horas </span> <span class="text-sm text-gray-500"> <i class="fa-solid fa-walking text-ambar mr-1"></i> Dificuldade: Fácil </span>
+         </div><button class="botao-primario bg-ambar text-azul-noite font-bold px-6 py-2 rounded-padrao hover:bg-yellow-400"> Ver Roteiro </button>
+        </div>
+       </article><!-- Roteiro 2 -->
+       <article class="card-hover bg-white rounded-padrao shadow-md overflow-hidden flex flex-col md:flex-row"><!-- Imagem Placeholder -->
+        <div class="md:w-1/3 h-48 md:h-auto bg-gradient-to-br from-verde to-azul-noite flex items-center justify-center"><i class="fa-solid fa-tree text-6xl text-white/50"></i>
+        </div><!-- Conteúdo -->
+        <div class="md:w-2/3 p-6">
+         <div class="flex flex-wrap items-center gap-2 mb-2">
+          <h3 class="font-titulo font-bold text-azul-noite text-xl">Trilha Ecológica do Rio Tietê</h3><span class="bg-verde text-white text-xs font-bold px-2 py-1 rounded-full"> <i class="fa-solid fa-leaf mr-1"></i> Ecoturismo </span>
+         </div>
+         <p class="text-gray-600 text-sm mb-4 line-clamp-2">Explore as margens do Rio Tietê, observando a fauna e flora local, com paradas para pesca esportiva e piquenique em áreas preservadas.</p>
+         <div class="flex flex-wrap items-center gap-4 mb-4"><span class="text-sm text-gray-500"> <i class="fa-regular fa-clock text-ambar mr-1"></i> Duração: 6 horas </span> <span class="text-sm text-gray-500"> <i class="fa-solid fa-walking text-ambar mr-1"></i> Dificuldade: Moderada </span>
+         </div><button class="botao-primario bg-ambar text-azul-noite font-bold px-6 py-2 rounded-padrao hover:bg-yellow-400"> Ver Roteiro </button>
+        </div>
+       </article><!-- Roteiro 3 -->
+       <article class="card-hover bg-white rounded-padrao shadow-md overflow-hidden flex flex-col md:flex-row"><!-- Imagem Placeholder -->
+        <div class="md:w-1/3 h-48 md:h-auto bg-gradient-to-br from-ambar to-verde flex items-center justify-center"><i class="fa-solid fa-utensils text-6xl text-white/50"></i>
+        </div><!-- Conteúdo -->
+        <div class="md:w-2/3 p-6">
+         <div class="flex flex-wrap items-center gap-2 mb-2">
+          <h3 class="font-titulo font-bold text-azul-noite text-xl">Tour Gastronômico Regional</h3><span class="bg-verde text-white text-xs font-bold px-2 py-1 rounded-full"> <i class="fa-solid fa-utensils mr-1"></i> Sabores do Tietê </span>
+         </div>
+         <p class="text-gray-600 text-sm mb-4 line-clamp-2">Deguste os sabores autênticos da região, visitando restaurantes tradicionais e conhecendo os produtores locais de ingredientes típicos.</p>
+         <div class="flex flex-wrap items-center gap-4 mb-4"><span class="text-sm text-gray-500"> <i class="fa-regular fa-clock text-ambar mr-1"></i> Duração: 5 horas </span> <span class="text-sm text-gray-500"> <i class="fa-solid fa-walking text-ambar mr-1"></i> Dificuldade: Fácil </span>
+         </div><button class="botao-primario bg-ambar text-azul-noite font-bold px-6 py-2 rounded-padrao hover:bg-yellow-400"> Ver Roteiro </button>
+        </div>
+       </article>
+      </div>
+     </div>
+    </section><!-- ========== BANNER EMPRESAS ========== -->
+    <section id="banner-empresas" class="py-16 px-4 bg-ambar">
+     <div class="max-w-4xl mx-auto text-center"><i class="fa-solid fa-store text-5xl text-azul-noite/80 mb-4"></i>
+      <h2 class="font-titulo font-bold text-azul-noite text-2xl md:text-3xl mb-4">Sua empresa faz parte das IGs de Birigui?</h2>
+      <p class="text-azul-noite/80 text-lg mb-8">Cadastre-se e divulgue seus eventos, produtos e serviços para milhares de turistas!</p><button class="botao-primario bg-azul-noite text-white font-bold px-8 py-4 rounded-padrao text-lg shadow-lg hover:bg-azul-noite/90 hover:scale-105"> <i class="fa-solid fa-plus-circle mr-2"></i> Cadastrar Empresa </button>
+     </div>
+    </section>
+   </div><!-- ========== SEÇÃO IGs - PÁGINA INDICAÇÕES GEOGRÁFICAS ========== -->
+   <div id="pagina-igs" style="display:none;"><!-- HERO INTERNO -->
+    <section class="bg-gradient-to-r from-azul-noite to-verde py-12 px-4">
+     <div class="max-w-7xl mx-auto"><!-- Breadcrumb -->
+      <div class="flex items-center gap-2 text-white/80 text-sm mb-6"><a href="#" onclick="mostrarPagina('home', event)" class="hover:text-white">Home</a> <i class="fa-solid fa-chevron-right"></i> <span class="text-white">Indicações Geográficas</span>
+      </div><!-- Títulos -->
+      <h1 class="font-titulo font-bold text-white text-4xl md:text-5xl mb-2">Indicações Geográficas de Birigui-SP</h1>
+      <p class="text-white/90 text-lg">Produtos e tradições com reconhecimento oficial do INPI</p>
+     </div>
+    </section><!-- O QUE É UMA IG -->
+    <section class="bg-creme py-12 px-4">
+     <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12"><!-- Coluna Esquerda -->
+       <div>
+        <h2 class="font-titulo font-bold text-azul-noite text-3xl mb-6">O que é uma Indicação Geográfica?</h2>
+        <p class="text-gray-700 text-lg leading-relaxed mb-6">Uma Indicação Geográfica (IG) é um selo oficial do <strong>INPI (Instituto Nacional da Propriedade Industrial)</strong> que identifica produtos de uma região pela sua qualidade, reputação ou características específicas derivadas de seu local de origem.</p>
+        <p class="text-gray-700 text-lg leading-relaxed">Em Birigui, as IGs reconhecem a excelência de produtos tradicionais que fizeram a história e a economia da região, garantindo autenticidade e diferencial no mercado nacional e internacional.</p>
+       </div><!-- Coluna Direita - Cards -->
+       <div class="space-y-6"><!-- Card 1 -->
+        <div class="bg-white rounded-padrao shadow-md p-6 border-l-4 border-ambar">
+         <div class="flex items-start gap-4">
+          <div class="w-12 h-12 bg-ambar/20 rounded-full flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-map-marker-alt text-2xl text-ambar"></i>
+          </div>
+          <div>
+           <h3 class="font-titulo font-bold text-azul-noite text-lg mb-2">Indicação de Procedência</h3>
+           <p class="text-gray-600">Reconhece a origem geográfica do produto, garantindo que vem de uma região específica.</p>
+          </div>
+         </div>
+        </div><!-- Card 2 -->
+        <div class="bg-white rounded-padrao shadow-md p-6 border-l-4 border-verde">
+         <div class="flex items-start gap-4">
+          <div class="w-12 h-12 bg-verde/20 rounded-full flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-certificate text-2xl text-verde"></i>
+          </div>
+          <div>
+           <h3 class="font-titulo font-bold text-azul-noite text-lg mb-2">Denominação de Origem</h3>
+           <p class="text-gray-600">Reconhece a influência do meio geográfico (solo, clima, tradição) na qualidade do produto.</p>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section><!-- IGs CADASTRADAS -->
+    <section class="bg-white py-12 px-4">
+     <div class="max-w-7xl mx-auto">
+      <h2 class="font-titulo font-bold text-azul-noite text-3xl md:text-4xl text-center mb-12">Conheça as IGs de Birigui-SP</h2><!-- Container das IGs (renderizado via JS) -->
+      <div id="container-igs" class="space-y-6"><!-- Cards serão inseridos aqui via JavaScript -->
+      </div>
+     </div>
+    </section><!-- EMPRESAS ASSOCIADAS -->
+    <section class="bg-creme py-12 px-4">
+     <div class="max-w-7xl mx-auto">
+      <h2 class="font-titulo font-bold text-azul-noite text-3xl md:text-4xl text-center mb-4">Empresas Associadas às IGs</h2>
+      <p class="text-gray-600 text-center mb-12">Conheça as empresas que representam a excelência nas Indicações Geográficas</p><!-- Container das Empresas (renderizado via JS) -->
+      <div id="container-empresas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"><!-- Cards serão inseridos aqui via JavaScript -->
+      </div>
+     </div>
+    </section><!-- BANNER INPI -->
+    <section class="bg-azul-noite py-12 px-4 text-center">
+     <div class="max-w-4xl mx-auto"><i class="fa-solid fa-certificate text-6xl text-ambar mb-6"></i>
+      <h2 class="font-titulo font-bold text-white text-3xl md:text-4xl mb-4">Reconhecimento Oficial pelo INPI</h2>
+      <p class="text-white/80 text-lg mb-8">O selo garante autenticidade e qualidade dos produtos de Birigui-SP, oferecendo diferencial competitivo e proteção legal no mercado.</p><a href="#" target="_blank" rel="noopener noreferrer" onclick="event.preventDefault()" class="inline-block botao-outline border-2 border-white text-white font-bold px-8 py-3 rounded-padrao hover:bg-white hover:text-azul-noite transition-all"> <i class="fa-solid fa-external-link mr-2"></i> Consultar no INPI </a>
+     </div>
+    </section>
+   </div><!-- ========== SEÇÃO EMPRESAS - PÁGINA LISTAGEM DE EMPRESAS ========== -->
+   <div id="pagina-empresas" style="display:none;"><!-- HERO INTERNO -->
+    <section class="bg-gradient-to-r from-azul-noite to-verde py-12 px-4">
+     <div class="max-w-7xl mx-auto"><!-- Breadcrumb -->
+      <div class="flex items-center gap-2 text-white/80 text-sm mb-6"><a href="#" onclick="mostrarPagina('home', event)" class="hover:text-white">Home</a> <i class="fa-solid fa-chevron-right"></i> <span class="text-white">Empresas</span>
+      </div><!-- Títulos -->
+      <h1 class="font-titulo font-bold text-white text-4xl md:text-5xl mb-2">Empresas de Birigui-SP</h1>
+      <p class="text-white/90 text-lg">Conheça as empresas locais associadas às nossas Indicações Geográficas</p>
+     </div>
+    </section><!-- BARRA DE FILTROS -->
+    <section class="bg-white shadow-sm border-b-4 border-ambar py-6 px-4 sticky top-16 z-40">
+     <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row gap-3 items-center justify-between"><!-- Filtros lado esquerdo -->
+       <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto items-center"><!-- Categoria --> <select id="filtro-categoria" class="border-2 border-gray-300 rounded-padrao px-4 py-2 text-sm font-medium text-gray-700 focus:outline-none focus:border-ambar" onchange="filtrarEmpresas()"> <option value="">Categoria: Todas</option> <option value="Fábrica">Fábrica</option> <option value="Hotel">Hotel</option> <option value="Restaurante">Restaurante</option> <option value="Agência de Turismo">Agência de Turismo</option> <option value="Loja">Loja</option> </select><!-- IG --> <select id="filtro-ig" class="border-2 border-gray-300 rounded-padrao px-4 py-2 text-sm font-medium text-gray-700 focus:outline-none focus:border-ambar" onchange="filtrarEmpresas()"> <option value="">IG: Todas</option> <option value="Calçado Infantil de Birigui">Calçado Infantil de Birigui</option> <option value="Artesanato do Noroeste Paulista">Artesanato do Noroeste Paulista</option> <option value="Sabores do Tietê">Sabores do Tietê</option> </select><!-- Busca -->
+        <div class="relative w-full md:w-48">
+         <input type="text" id="filtro-busca" class="w-full border-2 border-gray-300 rounded-padrao px-4 py-2 text-sm focus:outline-none focus:border-ambar pl-8" placeholder="Buscar empresa..." onkeyup="filtrarEmpresas()"> <i class="fa-solid fa-search absolute left-3 top-3 text-gray-400"></i>
+        </div><!-- Botão Limpar --> <button onclick="limparFiltros()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-padrao text-sm font-medium hover:bg-gray-400 transition"> Limpar </button>
+       </div><!-- Contador lado direito -->
+       <div class="text-ambar font-bold text-sm md:text-base"><span id="contador-empresas">8</span> de 8 empresas
+       </div>
+      </div>
+     </div>
+    </section><!-- GRID DE EMPRESAS -->
+    <section class="bg-creme py-12 px-4">
+     <div class="max-w-7xl mx-auto">
+      <div id="container-empresas-lista" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"><!-- Cards de empresas serão inseridos aqui via JavaScript -->
+      </div>
+     </div>
+    </section><!-- BANNER CADASTRO -->
+    <section class="bg-ambar py-10 px-4 md:px-8">
+     <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-8"><!-- Lado Esquerdo -->
+       <div>
+        <i class="fa-solid fa-store text-4xl text-azul-noite mb-2"></i>
+        <h2 class="font-titulo font-bold text-azul-noite text-2xl mb-2">Sua empresa ainda não está aqui?</h2>
+        <p class="text-azul-noite/80 text-lg">Cadastre-se gratuitamente e apareça para turistas de todo o Brasil.</p>
+       </div><!-- Lado Direito -->
+       <div class="md:text-right w-full md:w-auto">
+        <button class="botao-primario bg-azul-noite text-white font-bold px-8 py-4 rounded-padrao shadow-lg hover:bg-azul-noite/90 transition text-lg w-full md:w-auto"> <i class="fa-solid fa-plus-circle mr-2"></i> Cadastrar Empresa </button>
+       </div>
+      </div>
+     </div>
+    </section>
+   </div><!-- ========== SEÇÃO EVENTOS - PÁGINA LISTAGEM DE EVENTOS ========== -->
+   <div id="pagina-eventos" style="display:none;"><!-- HERO INTERNO -->
+    <section class="bg-gradient-to-r from-azul-noite to-verde py-12 px-4">
+     <div class="max-w-7xl mx-auto"><!-- Breadcrumb -->
+      <div class="flex items-center gap-2 text-white/80 text-sm mb-6"><a href="#" onclick="mostrarPagina('home', event)" class="hover:text-white">Home</a> <i class="fa-solid fa-chevron-right"></i> <span class="text-white">Eventos</span>
+      </div><!-- Títulos -->
+      <h1 class="font-titulo font-bold text-white text-4xl md:text-5xl mb-2">Eventos em Birigui-SP</h1>
+      <p class="text-white/90 text-lg">Feiras, festivais e atividades ligadas às Indicações Geográficas</p>
+     </div>
+    </section><!-- BARRA DE FILTROS -->
+    <section class="bg-white shadow-sm border-b-4 border-ambar py-6 px-4 sticky top-16 z-40">
+     <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row gap-3 items-center justify-between"><!-- Filtros lado esquerdo -->
+       <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto items-center"><!-- Mês --> <select id="filtro-mes" class="border-2 border-gray-300 rounded-padrao px-4 py-2 text-sm font-medium text-gray-700 focus:outline-none focus:border-ambar" onchange="filtrarEventos()"> <option value="">Mês: Todos</option> <option value="Janeiro">Janeiro</option> <option value="Fevereiro">Fevereiro</option> <option value="Março">Março</option> <option value="Abril">Abril</option> <option value="Maio">Maio</option> <option value="Junho">Junho</option> <option value="Julho">Julho</option> <option value="Agosto">Agosto</option> <option value="Setembro">Setembro</option> <option value="Outubro">Outubro</option> <option value="Novembro">Novembro</option> <option value="Dezembro">Dezembro</option> </select><!-- IG --> <select id="filtro-ig-eventos" class="border-2 border-gray-300 rounded-padrao px-4 py-2 text-sm font-medium text-gray-700 focus:outline-none focus:border-ambar" onchange="filtrarEventos()"> <option value="">IG: Todas</option> <option value="Calçado Infantil de Birigui">Calçado Infantil de Birigui</option> <option value="Artesanato do Noroeste Paulista">Artesanato do Noroeste Paulista</option> <option value="Sabores do Tietê">Sabores do Tietê</option> </select><!-- Busca -->
+        <div class="flex items-center gap-3 mb-4"><i class="fa-solid fa-search absolute left-3 top-3 text-gray-400"></i> <input type="text" id="filtro-busca-eventos" class="w-full border-2 border-gray-300 rounded-padrao px-4 py-2 text-sm focus:outline-none focus:border-ambar pl-8" placeholder="Buscar evento..." onkeyup="filtrarEventos()"><!-- Botão Limpar --> <button onclick="limparFiltrosEventos()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-padrao text-sm font-medium hover:bg-gray-400 transition"> Limpar </button>
+        </div><!-- Contador lado direito -->
+        <div class="text-ambar font-bold text-sm md:text-base"><span id="contador-eventos-pagina">8</span> de 8 eventos
+        </div>
+       </div>
+      </div>
+     </div>
+    </section><!-- GRID DE EVENTOS -->
+    <section class="bg-creme py-12 px-4">
+     <div class="max-w-7xl mx-auto">
+      <div id="container-eventos-lista" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"><!-- Cards de eventos serão inseridos aqui via JavaScript -->
+      </div>
+     </div>
+    </section><!-- BANNER CADASTRO -->
+    <section class="bg-ambar py-10 px-4 md:px-8">
+     <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-8"><!-- Lado Esquerdo -->
+       <div>
+        <i class="fa-solid fa-bullhorn text-4xl text-azul-noite mb-2"></i>
+        <h2 class="font-titulo font-bold text-azul-noite text-2xl mb-2">Sua empresa tem um evento?</h2>
+        <p class="text-azul-noite/80 text-lg">Cadastre sua empresa e divulgue para turistas.</p>
+       </div><!-- Lado Direito -->
+       <div class="md:text-right w-full md:w-auto">
+        <button class="botao-primario bg-azul-noite text-white font-bold px-8 py-4 rounded-padrao shadow-lg hover:bg-azul-noite/90 transition text-lg w-full md:w-auto"> <i class="fa-solid fa-plus-circle mr-2"></i> Cadastrar Empresa </button>
+       </div>
+      </div>
+     </div>
+    </section>
+   </div><!-- ========== SEÇÃO ROTEIROS - PÁGINA LISTAGEM DE ROTEIROS ========== -->
+   <div id="pagina-roteiros" style="display:none;"><!-- HERO INTERNO -->
+    <section class="bg-gradient-to-r from-azul-noite to-verde py-12 px-4">
+     <div class="max-w-7xl mx-auto"><!-- Breadcrumb -->
+      <div class="flex items-center gap-2 text-white/80 text-sm mb-6"><a href="#" onclick="mostrarPagina('home', event)" class="hover:text-white">Home</a> <i class="fa-solid fa-chevron-right"></i> <span class="text-white">Roteiros Turísticos</span>
+      </div><!-- Títulos -->
+      <h1 class="font-titulo font-bold text-white text-4xl md:text-5xl mb-2">Roteiros Turísticos de Birigui-SP</h1>
+      <p class="text-white/90 text-lg">Explore fábricas, museus e pontos históricos das nossas Indicações Geográficas</p>
+     </div>
+    </section><!-- BARRA DE FILTROS -->
+    <section class="bg-white shadow-sm border-b-4 border-ambar py-6 px-4 sticky top-16 z-40">
+     <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row gap-3 items-center justify-between"><!-- Filtros lado esquerdo -->
+       <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto items-center"><!-- IG --> <select id="filtro-ig-roteiros" class="border-2 border-gray-300 rounded-padrao px-4 py-2 text-sm font-medium text-gray-700 focus:outline-none focus:border-ambar" onchange="filtrarRoteiros()"> <option value="">IG: Todas</option> <option value="Calçado Infantil de Birigui">Calçado Infantil de Birigui</option> <option value="Artesanato do Noroeste Paulista">Artesanato do Noroeste Paulista</option> <option value="Sabores do Tietê">Sabores do Tietê</option> </select><!-- Duração --> <select id="filtro-duracao" class="border-2 border-gray-300 rounded-padrao px-4 py-2 text-sm font-medium text-gray-700 focus:outline-none focus:border-ambar" onchange="filtrarRoteiros()"> <option value="">Duração: Qualquer</option> <option value="Meio dia">Meio dia</option> <option value="Dia inteiro">Dia inteiro</option> <option value="Final de semana">Final de semana</option> </select><!-- Botão Limpar --> <button onclick="limparFiltrosRoteiros()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-padrao text-sm font-medium hover:bg-gray-400 transition"> Limpar </button>
+       </div><!-- Contador lado direito -->
+       <div class="text-ambar font-bold text-sm md:text-base"><span id="contador-roteiros">3</span> de 3 roteiros
+       </div>
+      </div>
+     </div>
+    </section><!-- ROTEIROS CARDS -->
+    <section class="bg-creme py-12 px-4">
+     <div class="max-w-7xl mx-auto">
+      <div id="container-roteiros" class="space-y-6"><!-- Cards de roteiros serão inseridos aqui via JavaScript -->
+      </div>
+     </div>
+    </section><!-- GASTRONOMIA REGIONAL -->
+    <section class="bg-azul-noite py-12 px-4">
+     <div class="max-w-7xl mx-auto">
+      <h2 class="font-titulo font-bold text-white text-3xl md:text-4xl text-center mb-12">Sabores das Indicações Geográficas</h2><!-- Grid de Gastronomia -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="container-gastronomia"><!-- Cards de gastronomia serão inseridos aqui via JavaScript -->
+      </div>
+     </div>
+    </section><!-- BANNER SUGESTÃO -->
+    <section class="bg-ambar py-10 px-4 md:px-8">
+     <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-8"><!-- Lado Esquerdo -->
+       <div>
+        <i class="fa-solid fa-lightbulb text-4xl text-azul-noite mb-2"></i>
+        <h2 class="font-titulo font-bold text-azul-noite text-2xl mb-2">Conhece um roteiro incrível?</h2>
+        <p class="text-azul-noite/80 text-lg">Sua sugestão pode virar um roteiro oficial de Birigui!</p>
+       </div><!-- Lado Direito -->
+       <div class="md:text-right w-full md:w-auto">
+        <button onclick="abrirModalSugestao()" class="botao-primario bg-azul-noite text-white font-bold px-8 py-4 rounded-padrao shadow-lg hover:bg-azul-noite/90 transition text-lg w-full md:w-auto"> <i class="fa-solid fa-pen-to-square mr-2"></i> Sugerir Roteiro </button>
+       </div>
+      </div>
+     </div>
+    </section>
+   </div><!-- ========== SEÇÃO GALERIA - PÁGINA LISTAGEM DE FOTOS ========== -->
+   <div id="pagina-galeria" style="display:none;"><!-- HERO INTERNO -->
+    <section class="bg-gradient-to-r from-azul-noite to-verde py-12 px-4">
+     <div class="max-w-7xl mx-auto"><!-- Breadcrumb -->
+      <div class="flex items-center gap-2 text-white/80 text-sm mb-6"><a href="#" onclick="mostrarPagina('home', event)" class="hover:text-white">Home</a> <i class="fa-solid fa-chevron-right"></i> <span class="text-white">Galeria</span>
+      </div><!-- Títulos -->
+      <h1 class="font-titulo font-bold text-white text-4xl md:text-5xl mb-2">Galeria de Imagens</h1>
+      <p class="text-white/90 text-lg">Fotos das atrações, produtos e tradições de Birigui-SP</p>
+     </div>
+    </section><!-- BARRA DE FILTROS -->
+    <section class="bg-white shadow-sm border-b-4 border-ambar py-6 px-4 sticky top-16 z-40">
+     <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row gap-3 items-center justify-between"><!-- Filtros lado esquerdo -->
+       <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto items-center"><!-- IG --> <select id="filtro-galeria-ig" class="border-2 border-gray-300 rounded-padrao px-4 py-2 text-sm font-medium text-gray-700 focus:outline-none focus:border-ambar" onchange="filtrarGaleria()"> <option value="">IG: Todas</option> <option value="Calçado Infantil de Birigui">Calçado Infantil de Birigui</option> <option value="Artesanato do Noroeste Paulista">Artesanato do Noroeste Paulista</option> <option value="Sabores do Tietê">Sabores do Tietê</option> </select><!-- Categoria --> <select id="filtro-galeria-cat" class="border-2 border-gray-300 rounded-padrao px-4 py-2 text-sm font-medium text-gray-700 focus:outline-none focus:border-ambar" onchange="filtrarGaleria()"> <option value="">Categoria: Todas</option> <option value="Fábricas">Fábricas</option> <option value="Monumentos">Monumentos</option> <option value="Gastronomia">Gastronomia</option> <option value="Eventos">Eventos</option> <option value="Paisagens">Paisagens</option> </select><!-- Botão Limpar --> <button onclick="limparFiltroGaleria()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-padrao text-sm font-medium hover:bg-gray-400 transition"> Limpar </button>
+       </div><!-- Contador lado direito -->
+       <div class="text-ambar font-bold text-sm md:text-base">
+        Exibindo <span id="contador-galeria">12</span> de 12 fotos
+       </div>
+      </div>
+     </div>
+    </section><!-- GRID DE GALERIA -->
+    <section class="bg-creme py-12 px-4">
+     <div class="max-w-7xl mx-auto">
+      <div id="container-galeria" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"><!-- Cards de fotos serão inseridos aqui via JavaScript -->
+      </div>
+     </div>
+    </section><!-- BANNER ADMIN -->
+    <section class="bg-azul-noite py-10 px-4 text-center">
+     <div class="max-w-4xl mx-auto"><i class="fa-solid fa-camera text-5xl text-ambar mb-4"></i>
+      <p class="text-white text-lg mb-2">Fotos gerenciadas pelo administrador do sistema.</p>
+      <p class="text-white/60 text-sm">Para adicionar ou remover imagens, acesse o painel administrativo.</p>
+     </div>
+    </section>
+   </div><!-- ========== MODAL SUGESTÃO DE ROTEIRO ========== -->
+   <div id="modal-sugestao" class="modal-overlay fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div class="modal-conteudo bg-white rounded-padrao shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto p-6"><!-- Botão Fechar --> <button onclick="fecharModalSugestao()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md"> <i class="fa-solid fa-times"></i> </button><!-- Header do Modal -->
+     <div class="mb-6">
+      <h2 class="font-titulo font-bold text-azul-noite text-2xl mb-2"><i class="fa-solid fa-lightbulb text-ambar mr-2"></i>Sugerir um Roteiro</h2>
+      <p class="text-gray-600 text-sm">Compartilhe sua ideia para um novo roteiro turístico em Birigui!</p>
+     </div><!-- Formulário -->
+     <form id="form-sugestao" class="space-y-4"><!-- Nome do Roteiro -->
+      <div>
+       <label for="sugestao-nome-roteiro" class="block text-sm font-bold text-azul-noite mb-2">Nome do Roteiro</label> <input type="text" id="sugestao-nome-roteiro" class="w-full border-2 border-gray-300 rounded-padrao px-3 py-2 text-sm focus:outline-none focus:border-ambar" placeholder="Ex: Rota das Fábricas Escondidas" required>
+      </div><!-- Descrição -->
+      <div>
+       <label for="sugestao-descricao" class="block text-sm font-bold text-azul-noite mb-2">Descrição</label> <textarea id="sugestao-descricao" class="w-full border-2 border-gray-300 rounded-padrao px-3 py-2 text-sm focus:outline-none focus:border-ambar resize-none" rows="4" placeholder="Descreva o roteiro e o que torna especial..." required></textarea>
+      </div><!-- Pontos de Interesse -->
+      <div>
+       <label for="sugestao-pontos" class="block text-sm font-bold text-azul-noite mb-2">Pontos de Interesse</label> <input type="text" id="sugestao-pontos" class="w-full border-2 border-gray-300 rounded-padrao px-3 py-2 text-sm focus:outline-none focus:border-ambar" placeholder="Ex: Museu, Fábrica, Praça..." required>
+      </div><!-- Nome -->
+      <div>
+       <label for="sugestao-seu-nome" class="block text-sm font-bold text-azul-noite mb-2">Seu Nome</label> <input type="text" id="sugestao-seu-nome" class="w-full border-2 border-gray-300 rounded-padrao px-3 py-2 text-sm focus:outline-none focus:border-ambar" placeholder="Seu nome completo" required>
+      </div><!-- Email -->
+      <div>
+       <label for="sugestao-email" class="block text-sm font-bold text-azul-noite mb-2">Email</label> <input type="email" id="sugestao-email" class="w-full border-2 border-gray-300 rounded-padrao px-3 py-2 text-sm focus:outline-none focus:border-ambar" placeholder="seu.email@example.com" required>
+      </div>
+     </form><!-- Botões -->
+     <div class="mt-6 flex gap-3 justify-end">
+      <button onclick="fecharModalSugestao()" class="botao-outline border-2 border-gray-300 text-gray-600 px-4 py-2 rounded-padrao font-medium hover:bg-gray-100"> Cancelar </button> <button onclick="enviarSugestao()" class="botao-primario bg-ambar text-azul-noite font-bold px-4 py-2 rounded-padrao hover:bg-yellow-400"> <i class="fa-solid fa-paper-plane mr-1"></i> Enviar </button>
+     </div>
+    </div>
+   </div><!-- ========== MODAL FOTO GALERIA ========== -->
+   <div id="modal-galeria" class="modal-overlay fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+    <div class="modal-conteudo bg-white rounded-xl shadow-2xl max-w-xl w-full overflow-hidden"><!-- Placeholder Topo -->
+     <div id="modal-foto-placeholder" class="h-64 flex items-center justify-center bg-gradient-to-br from-azul-noite to-azul-noite/60"><i class="fa-solid fa-image text-6xl text-white/40"></i>
+     </div><!-- Corpo do Modal -->
+     <div class="p-6 space-y-4">
+      <h2 id="modal-foto-titulo" class="font-titulo font-bold text-azul-noite text-2xl mb-2">Título da Foto</h2>
+      <p id="modal-foto-legenda" class="text-gray-600 text-sm leading-relaxed">Legenda descritiva da foto.</p><!-- Badges -->
+      <div class="flex gap-2 flex-wrap"><span id="modal-foto-ig" class="inline-block bg-ambar text-azul-noite text-xs font-bold px-3 py-1 rounded-full">IG</span> <span id="modal-foto-categoria" class="inline-block bg-verde text-white text-xs font-bold px-3 py-1 rounded-full">Categoria</span>
+      </div>
+     </div><!-- Footer Modal -->
+     <div class="bg-creme p-4 flex justify-center border-t border-gray-200"><button onclick="fecharFotoGaleria()" class="botao-outline border-2 border-gray-300 text-gray-600 px-6 py-2 rounded-padrao font-medium hover:bg-gray-100"> Fechar </button>
+     </div>
+    </div>
+   </div><!-- ========== SEÇÃO PLANEJAMENTO ========== -->
+   <div id="pagina-planejamento" style="display:none;">
+    <!-- HERO INTERNO -->
+    <section class="bg-gradient-to-r from-azul-noite to-verde py-12 px-4">
+     <div class="max-w-7xl mx-auto">
+      <div class="flex items-center gap-2 text-white/80 text-sm mb-6"><a href="#" onclick="mostrarPagina('home', event)" class="hover:text-white">Home</a> <i class="fa-solid fa-chevron-right"></i> <span class="text-white">Planejamento de Viagem</span>
+      </div>
+      <h1 class="font-titulo font-bold text-white text-4xl md:text-5xl mb-2">Planejamento de Viagem</h1>
+      <p class="text-white/90 text-lg">Tudo que você precisa saber para visitar Birigui-SP</p>
+     </div>
+    </section><!-- COMO CHEGAR -->
+    <section class="bg-creme py-12 px-4">
+     <div class="max-w-7xl mx-auto">
+      <h2 class="font-titulo font-bold text-azul-noite text-3xl md:text-4xl text-center mb-12">Como chegar a Birigui-SP</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+       <article class="card-hover bg-white rounded-xl shadow-md p-5 flex flex-col items-center text-center">
+        <div class="w-14 h-14 bg-ambar/20 rounded-full flex items-center justify-center mb-4"><i class="fa-solid fa-car text-3xl text-ambar"></i>
+        </div>
+        <h3 class="font-titulo font-bold text-azul-noite text-lg mb-2">De São Paulo</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">348 km pela Rodovia Marechal Rondon (SP-300). Aprox. <strong>4h</strong> de viagem.</p>
+       </article>
+       <article class="card-hover bg-white rounded-xl shadow-md p-5 flex flex-col items-center text-center">
+        <div class="w-14 h-14 bg-verde/20 rounded-full flex items-center justify-center mb-4"><i class="fa-solid fa-car text-3xl text-verde"></i>
+        </div>
+        <h3 class="font-titulo font-bold text-azul-noite text-lg mb-2">De Araçatuba</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">90 km pela SP-310. Aprox. <strong>1h</strong> de viagem. Sede da Região Tietê Vivo.</p>
+       </article>
+       <article class="card-hover bg-white rounded-xl shadow-md p-5 flex flex-col items-center text-center">
+        <div class="w-14 h-14 bg-azul-noite/10 rounded-full flex items-center justify-center mb-4"><i class="fa-solid fa-bus text-3xl text-azul-noite"></i>
+        </div>
+        <h3 class="font-titulo font-bold text-azul-noite text-lg mb-2">De Ônibus</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">Empresas Cometa e Reunidas saem de São Paulo diariamente com conforto e segurança.</p>
+       </article>
+      </div>
+     </div>
+    </section><!-- HOSPEDAGENS -->
+    <section class="bg-white py-12 px-4">
+     <div class="max-w-7xl mx-auto">
+      <h2 class="font-titulo font-bold text-azul-noite text-3xl md:text-4xl text-center mb-12">Onde se hospedar</h2>
+      <div id="container-hospedagens" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+     </div>
+    </section><!-- DICAS PRÁTICAS -->
+    <section class="bg-creme py-12 px-4">
+     <div class="max-w-7xl mx-auto">
+      <h2 class="font-titulo font-bold text-azul-noite text-3xl md:text-4xl text-center mb-12">Dicas para sua visita</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+       <article class="card-hover bg-white rounded-xl shadow-md p-5 text-center flex flex-col items-center">
+        <div class="w-12 h-12 bg-ambar/20 rounded-full flex items-center justify-center mb-3"><i class="fa-solid fa-sun text-2xl text-ambar"></i>
+        </div>
+        <h3 class="font-titulo font-bold text-azul-noite text-base mb-2">Melhor Época</h3>
+        <p class="text-gray-600 text-sm">Abril–Setembro (clima seco e agradável)</p>
+       </article>
+       <article class="card-hover bg-white rounded-xl shadow-md p-5 text-center flex flex-col items-center">
+        <div class="w-12 h-12 bg-verde/20 rounded-full flex items-center justify-center mb-3"><i class="fa-solid fa-clock text-2xl text-verde"></i>
+        </div>
+        <h3 class="font-titulo font-bold text-azul-noite text-base mb-2">Horário Fábricas</h3>
+        <p class="text-gray-600 text-sm">Segunda a Sexta: 8h às 17h</p>
+       </article>
+       <article class="card-hover bg-white rounded-xl shadow-md p-5 text-center flex flex-col items-center">
+        <div class="w-12 h-12 bg-azul-noite/10 rounded-full flex items-center justify-center mb-3"><i class="fa-solid fa-shirt text-2xl text-azul-noite"></i>
+        </div>
+        <h3 class="font-titulo font-bold text-azul-noite text-base mb-2">O que Levar</h3>
+        <p class="text-gray-600 text-sm">Roupas confortáveis para visitar fábricas</p>
+       </article>
+       <article class="card-hover bg-white rounded-xl shadow-md p-5 text-center flex flex-col items-center">
+        <div class="w-12 h-12 bg-verde/20 rounded-full flex items-center justify-center mb-3"><i class="fa-solid fa-map text-2xl text-verde"></i>
+        </div>
+        <h3 class="font-titulo font-bold text-azul-noite text-base mb-2">Informações</h3>
+        <p class="text-gray-600 text-sm">Mapa turístico na Secretaria de Turismo</p>
+       </article>
+      </div>
+     </div>
+    </section><!-- BANNER TIETÊ VIVO -->
+    <section class="bg-verde py-10 px-4 text-center">
+     <div class="max-w-4xl mx-auto">
+      <i class="fa-solid fa-water text-5xl text-white mb-4"></i>
+      <h2 class="font-titulo font-bold text-white text-3xl md:text-4xl mb-4">Região Turística Tietê Vivo</h2>
+      <p class="text-white/90 text-lg mb-8">Birigui integra a RT Tietê Vivo, com mais de 25 municípios unidos pelo turismo sustentável e experiências autênticas.</p><a href="#" target="_blank" rel="noopener noreferrer" onclick="event.preventDefault()" class="inline-block botao-outline border-2 border-white text-white font-bold px-8 py-3 rounded-padrao hover:bg-white hover:text-verde transition-all"><i class="fa-solid fa-arrow-right mr-2"></i> Conhecer a região</a>
+     </div>
+    </section>
+   </div><!-- MODAL HOSPEDAGEM -->
+   <div id="modal-hospedagem" class="modal-overlay fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div class="modal-conteudo bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90%] overflow-y-auto">
+     <button onclick="fecharModalHospedagem()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md"><i class="fa-solid fa-times"></i></button>
+     <div class="bg-creme p-6 text-center">
+      <div class="h-20 bg-white rounded-lg flex items-center justify-center mb-4 shadow-sm"><i class="fa-solid fa-hotel text-4xl text-azul-noite"></i>
+      </div>
+      <h2 id="modal-hotel-nome" class="font-titulo font-bold text-azul-noite text-2xl mb-3">Nome do Hotel</h2>
+      <div class="flex gap-2 justify-center flex-wrap"><span id="modal-hotel-tipo" class="bg-verde text-white text-xs font-bold px-3 py-1 rounded-full">Tipo</span> <span id="modal-hotel-estrelas" class="text-ambar text-sm font-bold">★★★</span>
+      </div>
+     </div>
+     <div class="p-6 space-y-6">
+      <div>
+       <h3 class="font-titulo font-bold text-azul-noite text-lg mb-2">Sobre</h3>
+       <p id="modal-hotel-descricao" class="text-gray-600 leading-relaxed text-sm">Descrição do hotel será exibida aqui.</p>
+      </div>
+      <div class="flex items-start gap-3">
+       <i class="fa-solid fa-map-marker-alt text-ambar text-lg w-6 mt-1"></i>
+       <div>
+        <p class="text-xs text-gray-500 font-medium">Endereço</p>
+        <p id="modal-hotel-endereco" class="text-azul-noite font-medium text-sm">Rua Exemplo, 123 - Birigui, SP</p>
+       </div>
+      </div>
+      <div class="flex items-center gap-3">
+       <i class="fa-solid fa-phone text-ambar text-lg w-6"></i>
+       <div>
+        <p class="text-xs text-gray-500 font-medium">Telefone</p><a id="modal-hotel-telefone" href="tel:" class="text-azul-noite font-medium hover:text-ambar">(18) 0000-0000</a>
+       </div>
+      </div>
+     </div>
+     <div class="bg-creme p-4 flex justify-end gap-3 border-t border-gray-200">
+      <button onclick="fecharModalHospedagem()" class="botao-outline border-2 border-gray-300 text-gray-600 px-4 py-2 rounded-padrao font-medium hover:bg-gray-100">Fechar</button> <a href="#" class="botao-primario bg-ambar text-azul-noite font-bold px-4 py-2 rounded-padrao hover:bg-yellow-400 inline-flex items-center gap-1"><i class="fa-solid fa-map"></i> Ver no mapa</a>
+     </div>
+    </div>
+   </div><!-- MODAL PERFIL EMPRESA (já existente) -->
+   <div class="modal-conteudo bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90%] overflow-y-auto"><!-- Botão Fechar --> <button onclick="fecharModalEmpresa()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md"> <i class="fa-solid fa-times"></i> </button><!-- Header do Modal com placeholder logo -->
+    <div class="bg-creme p-6 text-center">
+     <div class="h-24 bg-white rounded-lg flex items-center justify-center mb-4 shadow-sm">
+      <i id="modal-icon" class="fa-solid fa-building text-5xl text-azul-noite"></i>
+     </div>
+     <h2 id="modal-nome" class="font-titulo font-bold text-azul-noite text-2xl mb-3">Nome da Empresa</h2>
+     <div class="flex gap-2 justify-center flex-wrap"><span id="modal-categoria-badge" class="bg-verde text-white text-xs font-bold px-3 py-1 rounded-full"> Categoria </span> <span id="modal-ig-badge" class="bg-ambar text-azul-noite text-xs font-bold px-3 py-1 rounded-full"> IG </span>
+     </div>
+    </div><!-- Corpo do Modal -->
+    <div class="p-6 space-y-6"><!-- Seção: Sobre a Empresa -->
+     <div>
+      <h3 class="font-titulo font-bold text-azul-noite text-lg mb-2">Sobre a Empresa</h3>
+      <p id="modal-descricao" class="text-gray-600 leading-relaxed text-sm">Descrição da empresa será exibida aqui.</p>
+     </div><!-- Seção: Informações de Contato -->
+     <div>
+      <h3 class="font-titulo font-bold text-azul-noite text-lg mb-3">Informações de Contato</h3>
+      <div class="space-y-2">
+       <div class="flex items-center gap-3">
+        <i class="fa-solid fa-phone text-ambar text-lg w-5"></i>
+        <div>
+         <p class="text-xs text-gray-500">Telefone</p><a id="modal-telefone" href="tel:" class="text-azul-noite font-medium hover:text-ambar">(18) 0000-0000</a>
+        </div>
+       </div>
+       <div class="flex items-center gap-3">
+        <i class="fa-solid fa-envelope text-ambar text-lg w-5"></i>
+        <div>
+         <p class="text-xs text-gray-500">Email</p><a id="modal-email" href="mailto:" class="text-azul-noite font-medium hover:text-ambar break-all">empresa@example.com</a>
+        </div>
+       </div>
+       <div class="flex items-start gap-3">
+        <i class="fa-solid fa-map-marker-alt text-ambar text-lg w-5 mt-1"></i>
+        <div>
+         <p class="text-xs text-gray-500">Endereço</p>
+         <p id="modal-endereco" class="text-azul-noite font-medium text-sm">Rua Exemplo, 123 - Birigui, SP</p>
+        </div>
+       </div>
+      </div>
+     </div><!-- Seção: Horário de Funcionamento -->
+     <div>
+      <h3 class="font-titulo font-bold text-azul-noite text-lg mb-2">Horário de Funcionamento</h3>
+      <p id="modal-horario" class="text-gray-600 text-sm leading-relaxed">Segunda a Sexta: 08:00 - 18:00</p>
+     </div>
+    </div><!-- Rodapé Modal -->
+    <div class="bg-creme p-4 flex justify-end gap-3 border-t border-gray-200">
+     <button onclick="fecharModalEmpresa()" class="botao-outline border-2 border-gray-300 text-gray-600 px-4 py-2 rounded-padrao font-medium hover:bg-gray-100"> Fechar </button> <button class="botao-primario bg-ambar text-azul-noite font-bold px-4 py-2 rounded-padrao hover:bg-yellow-400"> <i class="fa-solid fa-globe mr-1"></i> Visitar Site </button>
+    </div>
+   </div><!-- ========== MODAL EVENTO (Página Eventos) ========== -->
+   <div id="modal-evento-pagina" class="modal-overlay fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div class="modal-conteudo bg-white rounded-padrao shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto"><!-- Botão Fechar --> <button onclick="fecharModalEventoPagina()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md"> <i class="fa-solid fa-times"></i> </button><!-- Header do Modal -->
+     <div class="bg-creme p-6 border-b-4 border-ambar">
+      <div class="flex gap-2 mb-3"><span id="modal-evento-categoria" class="inline-block bg-azul-noite text-white text-xs font-bold px-3 py-1 rounded-full"> Categoria </span> <span id="modal-evento-ig" class="inline-block bg-ambar text-azul-noite text-xs font-bold px-3 py-1 rounded-full"> IG </span>
+      </div>
+      <h2 id="modal-evento-titulo" class="font-titulo font-bold text-azul-noite text-2xl">Título do Evento</h2>
+     </div><!-- Corpo do Modal -->
+     <div class="p-6 space-y-4"><!-- Data e Horário -->
+      <div class="flex items-center gap-3"><i class="fa-regular fa-calendar text-ambar text-lg w-6"></i>
+       <div>
+        <p class="text-xs text-gray-500">Data e Horário</p>
+        <p id="modal-evento-data-hora" class="text-azul-noite font-medium">15/03/2026 - 09h às 18h</p>
+       </div>
+      </div><!-- Endereço -->
+      <div class="flex items-start gap-3"><i class="fa-solid fa-map-marker-alt text-ambar text-lg w-6 mt-1"></i>
+       <div>
+        <p class="text-xs text-gray-500">Local</p>
+        <p id="modal-evento-local" class="text-azul-noite font-medium text-sm">Centro de Eventos Birigui</p>
+        <p id="modal-evento-endereco" class="text-gray-600 text-xs">Av. das Indústrias, 500 – Birigui-SP</p>
+       </div>
+      </div><!-- Empresa -->
+      <div class="flex items-center gap-3"><i class="fa-solid fa-building text-ambar text-lg w-6"></i>
+       <div>
+        <p class="text-xs text-gray-500">Empresa Organizadora</p>
+        <p id="modal-evento-empresa" class="text-azul-noite font-medium">SIMBI</p>
+       </div>
+      </div><!-- Sobre o Evento -->
+      <div class="pt-4 border-t border-gray-200">
+       <h3 class="font-titulo font-bold text-azul-noite text-lg mb-2">Sobre o Evento</h3>
+       <p id="modal-evento-descricao" class="text-gray-700 leading-relaxed text-sm">Descrição completa do evento será exibida aqui.</p>
+      </div>
+     </div><!-- Rodapé Modal -->
+     <div class="bg-creme p-4 flex justify-end gap-3 border-t border-gray-200">
+      <button onclick="fecharModalEventoPagina()" class="botao-outline border-2 border-gray-300 text-gray-600 px-4 py-2 rounded-padrao font-medium hover:bg-gray-100"> Fechar </button> <a href="#" class="botao-primario bg-ambar text-azul-noite font-bold px-4 py-2 rounded-padrao hover:bg-yellow-400 inline-flex items-center gap-1"> Quero participar <i class="fa-solid fa-arrow-right"></i> </a>
+     </div>
+    </div>
+   </div>
+   <div id="modal-evento" class="modal-overlay fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div class="modal-conteudo bg-white rounded-padrao shadow-2xl max-w-lg w-full max-h-[90%] overflow-y-auto"><!-- Header do Modal -->
+     <div class="bg-gradient-to-r from-azul-noite to-verde p-4 rounded-t-padrao flex items-center justify-between">
+      <h3 id="modal-titulo" class="font-titulo font-bold text-white text-xl">Título do Evento</h3><button onclick="fecharModal()" class="text-white/80 hover:text-white text-2xl" aria-label="Fechar modal"> <i class="fa-solid fa-times"></i> </button>
+     </div><!-- Corpo do Modal -->
+     <div class="p-6">
+      <div class="flex flex-wrap gap-4 mb-4"><span id="modal-data" class="text-sm text-gray-600 flex items-center gap-1"> <i class="fa-regular fa-calendar text-ambar"></i> Data do Evento </span> <span id="modal-local" class="text-sm text-gray-600 flex items-center gap-1"> <i class="fa-solid fa-location-dot text-ambar"></i> Local do Evento </span>
+      </div><span id="modal-empresa" class="inline-block bg-verde/20 text-verde text-sm font-medium px-3 py-1 rounded-full mb-4"> <i class="fa-solid fa-building mr-1"></i> Empresa Organizadora </span>
+      <p id="modal-descricao" class="text-gray-700 leading-relaxed">Descrição completa do evento será exibida aqui.</p>
+     </div><!-- Footer do Modal -->
+     <div class="bg-creme p-4 rounded-b-padrao flex justify-end gap-3"><button onclick="fecharModal()" class="botao-outline border-2 border-gray-300 text-gray-600 px-4 py-2 rounded-padrao font-medium hover:bg-gray-100"> Fechar </button> <button class="botao-primario bg-ambar text-azul-noite font-bold px-4 py-2 rounded-padrao hover:bg-yellow-400"> <i class="fa-solid fa-calendar-plus mr-1"></i> Adicionar à Agenda </button>
+     </div>
+    </div>
+   </div>
+   <footer class="bg-azul-noite text-white py-10 px-4">
+    <div class="max-w-7xl mx-auto"><!-- Área Principal do Footer -->
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8"><!-- Coluna 1: Logo e Slogan -->
+      <div class="lg:col-span-1">
+       <div class="flex items-center gap-2 mb-4"><i class="fa-solid fa-shoe-prints text-2xl text-ambar"></i> <span class="font-titulo font-bold text-xl">Birigui Turismo IG</span>
+       </div>
+       <p id="slogan-footer" class="text-white/70 text-sm">Promovendo o turismo e as tradições de Birigui-SP.</p>
+      </div><!-- Coluna 2: Navegação -->
+      <div>
+       <h4 class="font-titulo font-bold text-lg mb-4 text-ambar">Navegação</h4>
+       <nav class="flex flex-col gap-2"><a href="#" class="text-white/70 hover:text-ambar transition-colors text-sm" onclick="mostrarPagina('home', event)">Home</a> <a href="#" class="text-white/70 hover:text-ambar transition-colors text-sm" onclick="mostrarPagina('igs', event)">IGs</a> <a href="#" class="text-white/70 hover:text-ambar transition-colors text-sm" onclick="mostrarPagina('empresas', event)">Empresas</a> <a href="#" class="text-white/70 hover:text-ambar transition-colors text-sm" onclick="mostrarPagina('eventos', event)">Eventos</a> <a href="#" class="text-white/70 hover:text-ambar transition-colors text-sm" onclick="mostrarPagina('roteiros', event)">Roteiros</a> <a href="#" class="text-white/70 hover:text-ambar transition-colors text-sm" onclick="mostrarPagina('galeria', event)">Galeria</a> <a href="#" class="text-white/70 hover:text-ambar transition-colors text-sm" onclick="mostrarPagina('planejamento', event)">Planejamento</a>
+       </nav>
+      </div><!-- Coluna 3: Contato -->
+      <div>
+       <h4 class="font-titulo font-bold text-lg mb-4 text-ambar">Contato</h4>
+       <div class="flex flex-col gap-3"><a href="mailto:contato@biriguiturismoig.com.br" class="text-white/70 hover:text-ambar transition-colors text-sm flex items-center gap-2"> <i class="fa-solid fa-envelope"></i> contato@biriguiturismoig.com.br </a> <a href="tel:+551832722000" class="text-white/70 hover:text-ambar transition-colors text-sm flex items-center gap-2"> <i class="fa-solid fa-phone"></i> (18) 3272-2000 </a>
+        <p class="text-white/70 text-sm flex items-center gap-2"><i class="fa-solid fa-location-dot"></i> Birigui, SP - Brasil</p>
+       </div>
+      </div><!-- Coluna 4: Parceiros -->
+      <div>
+       <h4 class="font-titulo font-bold text-lg mb-4 text-ambar">Parceiros</h4>
+       <div class="flex flex-col gap-2"><span class="text-white/70 text-sm flex items-center gap-2"> <i class="fa-solid fa-handshake text-verde"></i> SIMBI - Sindicato das Indústrias </span> <span class="text-white/70 text-sm flex items-center gap-2"> <i class="fa-solid fa-graduation-cap text-verde"></i> IFSP Birigui </span> <span class="text-white/70 text-sm flex items-center gap-2"> <i class="fa-solid fa-water text-verde"></i> Tietê Vivo </span>
+       </div>
+      </div>
+     </div><!-- Divisor -->
+     <div class="border-t border-white/20 pt-6">
+      <p class="text-center text-white/50 text-sm">© 2026 Birigui Turismo IG – Projeto Acadêmico IFSP</p>
+     </div>
+    </div>
+   </footer>
+  </main><!-- ============================================
+         JAVASCRIPT - Interações e Dados
+         ============================================ -->
+  <script>
+        // ========================================
+        // CONFIGURAÇÃO PADRÃO
+        // ========================================
+        const configuracaoPadrao = {
+            site_title: 'Birigui Turismo IG',
+            hero_title: 'Descubra Birigui-SP',
+            hero_subtitle: 'Polo do Calçado Infantil e destino turístico do Noroeste Paulista',
+            slogan: 'Promovendo o turismo e as tradições de Birigui-SP.',
+            cor_primaria: '#1A3C5E',
+            cor_destaque: '#F5A623',
+            cor_secundaria: '#2D7A3A',
+            cor_fundo: '#F9F5F0',
+            cor_texto: '#1f2937',
+            familia_fonte: 'Lato',
+            tamanho_fonte: 16
+        };
+        
+        // ========================================
+        // DADOS SIMULADOS - HOSPEDAGENS
+        // ========================================
+        /**
+         * Array com as hospedagens disponíveis em Birigui
+         * Cada objeto contém: id, nome, tipo, estrelas, endereco, telefone, descricao
+         */
+        const listaHospedagens = [
+            {
+                id: 1,
+                nome: 'Hotel Turismo Noroeste',
+                tipo: 'Hotel',
+                estrelas: 3,
+                endereco: 'Av. Marechal Rondon, 1200 – Birigui-SP',
+                telefone: '(18) 3642-1000',
+                descricao: 'Hotel completo no centro da cidade, próximo ao Terminal Rodoviário e ao comércio local.'
+            },
+            {
+                id: 2,
+                nome: 'Pousada Ecológica Tietê',
+                tipo: 'Pousada',
+                estrelas: 4,
+                endereco: 'Estrada do Rio Tietê, km 5 – Birigui-SP',
+                telefone: '(18) 3642-2200',
+                descricao: 'Pousada amiga do ambiente à beira do Rio Tietê com chalés confortáveis e natureza.'
+            },
+            {
+                id: 3,
+                nome: 'Hotel Premium Birigui',
+                tipo: 'Hotel',
+                estrelas: 4,
+                endereco: 'Rua Comércio, 850 – Birigui-SP',
+                telefone: '(18) 3642-3300',
+                descricao: 'Hotel de luxo com piscina, restaurante gourmet e suítes equipadas.'
+            },
+            {
+                id: 4,
+                nome: 'Hostel Birigui Viajante',
+                tipo: 'Hostel',
+                estrelas: 2,
+                endereco: 'Avenida Brasil, 500 – Birigui-SP',
+                telefone: '(18) 3642-4400',
+                descricao: 'Hostel moderno com preços acessíveis, perfeito para mochileiros e grupos.'
+            },
+            {
+                id: 5,
+                nome: 'Fazenda Hotel Campos do Tietê',
+                tipo: 'Fazenda Hotel',
+                estrelas: 3,
+                endereco: 'Zona Rural – Km 10 da SP-310 – Birigui-SP',
+                telefone: '(18) 3642-5500',
+                descricao: 'Fazenda histórica com acomodações rústicas e experiências de turismo rural.'
+            },
+            {
+                id: 6,
+                nome: 'Apart Hotel Calçado Birigui',
+                tipo: 'Apart Hotel',
+                estrelas: 3,
+                endereco: 'Rua Industrial, 200 – Birigui-SP',
+                telefone: '(18) 3642-6600',
+                descricao: 'Apart hotel com kitchenette, ideal para viagens de longa duração.'
+            }
+        ];
+
+        // ========================================
+        // DADOS SIMULADOS - GALERIA
+        // ========================================
+        /**
+         * Array com as fotos da galeria
+         * Cada objeto contém: id, titulo, legenda, ig, categoria, cor
+         */
+        const listaGaleria = [
+            {
+                id: 1,
+                titulo: 'Museu do Calçado',
+                legenda: 'Acervo histórico dos calçados infantis de Birigui.',
+                ig: 'Calçado Infantil de Birigui',
+                categoria: 'Monumentos',
+                cor: '#1A3C5E'
+            },
+            {
+                id: 2,
+                titulo: 'Feira do Calçado 2025',
+                legenda: 'Exposição anual das fábricas locais.',
+                ig: 'Calçado Infantil de Birigui',
+                categoria: 'Eventos',
+                cor: '#F5A623'
+            },
+            {
+                id: 3,
+                titulo: 'Fábrica Premium',
+                legenda: 'Processo de produção de calçados de qualidade premium.',
+                ig: 'Calçado Infantil de Birigui',
+                categoria: 'Fábricas',
+                cor: '#2D7A3A'
+            },
+            {
+                id: 4,
+                titulo: 'Artesãos em Ação',
+                legenda: 'Mestres artesãos criando peças exclusivas em couro.',
+                ig: 'Artesanato do Noroeste Paulista',
+                categoria: 'Fábricas',
+                cor: '#8B4513'
+            },
+            {
+                id: 5,
+                titulo: 'Rio Tietê ao Amanhecer',
+                legenda: 'Vista panorâmica do Rio Tietê em dia de céu azul.',
+                ig: 'Sabores do Tietê',
+                categoria: 'Paisagens',
+                cor: '#4A90E2'
+            },
+            {
+                id: 6,
+                titulo: 'Festival Gastronômico',
+                legenda: 'Apresentação de pratos típicos da culinária regional.',
+                ig: 'Sabores do Tietê',
+                categoria: 'Eventos',
+                cor: '#FF6B6B'
+            },
+            {
+                id: 7,
+                titulo: 'Prato Tradicional',
+                legenda: 'Caldo de piranha, receita autêntica do Rio Tietê.',
+                ig: 'Sabores do Tietê',
+                categoria: 'Gastronomia',
+                cor: '#FFA500'
+            },
+            {
+                id: 8,
+                titulo: 'Loja de Artesanato',
+                legenda: 'Espaço com peças exclusivas de artesãos locais.',
+                ig: 'Artesanato do Noroeste Paulista',
+                categoria: 'Monumentos',
+                cor: '#D4A373'
+            },
+            {
+                id: 9,
+                titulo: 'Bolsas em Couro',
+                legenda: 'Produção artesanal de bolsas em couro autêntico.',
+                ig: 'Artesanato do Noroeste Paulista',
+                categoria: 'Gastronomia',
+                cor: '#8B7355'
+            },
+            {
+                id: 10,
+                titulo: 'Centro de Birigui',
+                legenda: 'Monumento ao calçado infantil no coração da cidade.',
+                ig: 'Calçado Infantil de Birigui',
+                categoria: 'Monumentos',
+                cor: '#5C4033'
+            },
+            {
+                id: 11,
+                titulo: 'Trilha Ecológica',
+                legenda: 'Caminho natural com vista para o Rio Tietê.',
+                ig: 'Sabores do Tietê',
+                categoria: 'Paisagens',
+                cor: '#3D7A3A'
+            },
+            {
+                id: 12,
+                titulo: 'Desfile de Moda',
+                legenda: 'Apresentação de calçados infantis em runway.',
+                ig: 'Calçado Infantil de Birigui',
+                categoria: 'Eventos',
+                cor: '#C41E3A'
+            }
+        ];
+
+        // ========================================
+        // VARIÁVEIS GLOBAIS - GALERIA
+        // ========================================
+        let fotoSelecionada = null;
+        let fotosFiltragas = [...listaGaleria];
+        
+        // ========================================
+        // FUNÇÃO: Renderiza galeria dinamicamente
+        // ========================================
+        /**
+         * Renderiza os cards de fotos da galeria
+         * @param {Array} lista - Array de fotos a renderizar
+         */
+        function renderGaleria(lista) {
+            const container = document.getElementById('container-galeria');
+            container.innerHTML = '';
+            
+            // Atualiza fotos filtradas para uso nos modais
+            fotosFiltragas = lista;
+            
+            lista.forEach((foto) => {
+                const cardHTML = `
+                    <article class="card-hover bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl hover:-translate-y-1 transition cursor-pointer" onclick="abrirFotoGaleria(${foto.id})">
+                        <!-- Placeholder com Ícone -->
+                        <div class="h-48 flex items-center justify-center relative" style="background-color: ${foto.cor}">
+                            <i class="fa-solid fa-image text-4xl text-white/40"></i>
+                            <!-- Badge de categoria -->
+                            <span class="absolute top-3 right-3 bg-azul-noite text-white text-xs font-bold px-3 py-1 rounded-full">
+                                ${foto.categoria}
+                            </span>
+                        </div>
+                        <!-- Corpo do Card -->
+                        <div class="p-3">
+                            <h3 class="font-titulo font-bold text-azul-noite text-sm mb-1 line-clamp-1">
+                                ${foto.titulo}
+                            </h3>
+                            <p class="text-gray-600 text-xs mb-2 line-clamp-1">
+                                ${foto.legenda}
+                            </p>
+                            <span class="inline-block bg-ambar text-azul-noite text-xs font-bold px-2 py-1 rounded-full">
+                                ${foto.ig}
+                            </span>
+                        </div>
+                    </article>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHTML);
+            });
+            
+            // Atualiza contador de fotos
+            atualizarContadorGaleria();
+        }
+
+        // ========================================
+        // FUNÇÃO: Filtrar galeria
+        // ========================================
+        /**
+         * Filtra o array de fotos por IG e categoria
+         * Aplica ambos os filtros simultaneamente
+         */
+        function filtrarGaleria() {
+            const ig = document.getElementById('filtro-galeria-ig').value;
+            const categoria = document.getElementById('filtro-galeria-cat').value;
+            
+            // Filtra o array original
+            const resultado = listaGaleria.filter(foto => {
+                // Filtro por IG
+                if (ig && foto.ig !== ig) return false;
+                
+                // Filtro por categoria
+                if (categoria && foto.categoria !== categoria) return false;
+                
+                return true;
+            });
+            
+            // Renderiza resultado filtrado
+            renderGaleria(resultado);
+        }
+
+        // ========================================
+        // FUNÇÃO: Limpar filtros galeria
+        // ========================================
+        /**
+         * Reseta todos os filtros e exibe todas as fotos
+         */
+        function limparFiltroGaleria() {
+            document.getElementById('filtro-galeria-ig').value = '';
+            document.getElementById('filtro-galeria-cat').value = '';
+            
+            renderGaleria(listaGaleria);
+        }
+
+        // ========================================
+        // FUNÇÃO: Atualizar contador galeria
+        // ========================================
+        /**
+         * Atualiza o contador de fotos exibidas
+         */
+        function atualizarContadorGaleria() {
+            const exibindo = fotosFiltragas.length;
+            
+            document.getElementById('contador-galeria').textContent = exibindo;
+        }
+
+        // ========================================
+        // FUNÇÃO: Abrir foto em modal
+        // ========================================
+        /**
+         * Abre o modal com a foto selecionada
+         * @param {number} id - ID da foto
+         */
+        function abrirFotoGaleria(id) {
+            // Busca a foto pelo ID
+            fotoSelecionada = listaGaleria.find(foto => foto.id === id);
+            
+            if (!fotoSelecionada) return;
+            
+            // Preenche os dados do modal
+            document.getElementById('modal-foto-placeholder').style.background = `linear-gradient(135deg, ${fotoSelecionada.cor} 0%, ${fotoSelecionada.cor}dd 100%)`;
+            document.getElementById('modal-foto-titulo').textContent = fotoSelecionada.titulo;
+            document.getElementById('modal-foto-legenda').textContent = fotoSelecionada.legenda;
+            document.getElementById('modal-foto-ig').textContent = fotoSelecionada.ig;
+            document.getElementById('modal-foto-categoria').textContent = fotoSelecionada.categoria;
+            
+            // Exibe o modal
+            const modal = document.getElementById('modal-galeria');
+            modal.classList.add('visivel');
+            
+            // Previne scroll do body
+            document.body.style.overflow = 'hidden';
+        }
+
+        // ========================================
+        // FUNÇÃO: Fechar modal foto
+        // ========================================
+        /**
+         * Fecha o modal de foto
+         */
+        function fecharFotoGaleria() {
+            const modal = document.getElementById('modal-galeria');
+            modal.classList.remove('visivel');
+            
+            // Restaura scroll do body
+            document.body.style.overflow = '';
+            
+            fotoSelecionada = null;
+        }
+        
+        // ========================================
+        // EVENT LISTENERS - GALERIA
+        // ========================================
+        
+        // Fecha modal galeria ao clicar fora do conteúdo
+        document.getElementById('modal-galeria').addEventListener('click', function(evento) {
+            if (evento.target === this) {
+                fecharFotoGaleria();
+            }
+        });
+
+        // ========== Resto do JavaScript anterior (já existente) ==========
+        // Não foi alterado - mantém todas as funções anteriores!
+        
+        // ========================================
+        // FUNÇÃO: Renderiza hospedagens dinamicamente
+        // ========================================
+        /**
+         * Renderiza os cards de hospedagens na página de planejamento
+         */
+        function renderHospedagens() {
+            const container = document.getElementById('container-hospedagens');
+            container.innerHTML = '';
+            
+            listaHospedagens.forEach((hospedagem) => {
+                // Gera as estrelas dinamicamente
+                let estrelas = '';
+                for (let i = 0; i < hospedagem.estrelas; i++) {
+                    estrelas += '<i class="fa-solid fa-star text-ambar"></i>';
+                }
+                
+                const cardHTML = `
+                    <article class="card-hover bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl hover:-translate-y-1 transition">
+                        <!-- Topo com gradiente -->
+                        <div class="h-36 bg-gradient-to-br from-azul-noite to-azul-noite/60 flex items-center justify-center">
+                            <i class="fa-solid fa-hotel text-5xl text-white/40"></i>
+                        </div>
+                        <!-- Corpo do card -->
+                        <div class="p-4">
+                            <h3 class="font-titulo font-bold text-azul-noite text-lg mb-2">${hospedagem.nome}</h3>
+                            <span class="inline-block bg-verde text-white text-xs font-bold px-3 py-1 rounded-full mb-3">
+                                ${hospedagem.tipo}
+                            </span>
+                            <!-- Estrelas -->
+                            <div class="flex items-center gap-1 mb-3">
+                                ${estrelas}
+                            </div>
+                            <!-- Endereço -->
+                            <div class="flex items-start gap-2 mb-2 text-sm text-gray-600">
+                                <i class="fa-solid fa-map-marker-alt text-ambar mt-0.5 flex-shrink-0"></i>
+                                <span class="line-clamp-1">${hospedagem.endereco}</span>
+                            </div>
+                            <!-- Telefone -->
+                            <div class="flex items-center gap-2 mb-4 text-sm text-gray-600">
+                                <i class="fa-solid fa-phone text-ambar"></i>
+                                <span>${hospedagem.telefone}</span>
+                            </div>
+                            <!-- Botão -->
+                            <button onclick="abrirModalHospedagem(${hospedagem.id})" class="w-full botao-primario bg-azul-noite text-white py-2 rounded-padrao font-medium hover:bg-azul-noite/90">
+                                Ver detalhes
+                            </button>
+                        </div>
+                    </article>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHTML);
+            });
+        }
+
+        // ========================================
+        // FUNÇÃO: Abrir modal de hospedagem
+        // ========================================
+        /**
+         * Abre o modal com os detalhes da hospedagem
+         * @param {number} id - ID da hospedagem
+         */
+        function abrirModalHospedagem(id) {
+            const hospedagem = listaHospedagens.find(h => h.id === id);
+            if (!hospedagem) return;
+            
+            // Preenche os dados do modal
+            document.getElementById('modal-hotel-nome').textContent = hospedagem.nome;
+            document.getElementById('modal-hotel-tipo').textContent = hospedagem.tipo;
+            document.getElementById('modal-hotel-descricao').textContent = hospedagem.descricao;
+            document.getElementById('modal-hotel-endereco').textContent = hospedagem.endereco;
+            
+            const telefoneLimpo = hospedagem.telefone.replace(/[^0-9-]/g, '');
+            document.getElementById('modal-hotel-telefone').href = `tel:+55${telefoneLimpo}`;
+            document.getElementById('modal-hotel-telefone').textContent = hospedagem.telefone;
+            
+            // Gera as estrelas
+            let estrelas = '';
+            for (let i = 0; i < hospedagem.estrelas; i++) {
+                estrelas += '★';
+            }
+            document.getElementById('modal-hotel-estrelas').textContent = estrelas;
+            
+            // Exibe o modal
+            const modal = document.getElementById('modal-hospedagem');
+            modal.classList.add('visivel');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // ========================================
+        // FUNÇÃO: Fechar modal de hospedagem
+        // ========================================
+        /**
+         * Fecha o modal de hospedagem
+         */
+        function fecharModalHospedagem() {
+            const modal = document.getElementById('modal-hospedagem');
+            modal.classList.remove('visivel');
+            document.body.style.overflow = '';
+        }
+
+        // ========================================
+        // EVENT LISTENERS - HOSPEDAGEM
+        // ========================================
+        
+        // Fecha modal ao clicar fora do conteúdo
+        document.getElementById('modal-hospedagem').addEventListener('click', function(evento) {
+            if (evento.target === this) {
+                fecharModalHospedagem();
+            }
+        });
+
+        /**
+         * Alterna a visibilidade entre páginas (Home, IGs, Empresas, Eventos, Roteiros, Galeria e Planejamento)
+         * com scroll automático para topo
+         * @param {string} pagina - Nome da página ('home', 'igs', 'empresas' ou 'eventos')
+         * @param {Event} event - Evento do clique
+         */
+        function mostrarPagina(pagina, event) {
+            event.preventDefault();
+            
+            // Fecha o menu mobile se estiver aberto
+            if (menuAberto) {
+                alternarMenu();
+            }
+            
+            // Oculta todas as páginas
+            document.getElementById('pagina-home').style.display = 'none';
+            document.getElementById('pagina-igs').style.display = 'none';
+            document.getElementById('pagina-empresas').style.display = 'none';
+            document.getElementById('pagina-eventos').style.display = 'none';
+            document.getElementById('pagina-roteiros').style.display = 'none';
+            document.getElementById('pagina-galeria').style.display = 'none';
+            document.getElementById('pagina-planejamento').style.display = 'none';
+            
+            // Mostra a página selecionada
+            if (pagina === 'home') {
+                document.getElementById('pagina-home').style.display = 'block';
+                paginaAtual = 'home';
+            } else if (pagina === 'igs') {
+                document.getElementById('pagina-igs').style.display = 'block';
+                paginaAtual = 'igs';
+                renderizarIGs();
+                renderizarEmpresasIG();
+            } else if (pagina === 'empresas') {
+                document.getElementById('pagina-empresas').style.display = 'block';
+                paginaAtual = 'empresas';
+                renderizarEmpresas(listaEmpresas);
+            } else if (pagina === 'eventos') {
+                document.getElementById('pagina-eventos').style.display = 'block';
+                paginaAtual = 'eventos';
+                renderizarEventosPagina(listaEventosCompleta);
+            } else if (pagina === 'roteiros') {
+                document.getElementById('pagina-roteiros').style.display = 'block';
+                paginaAtual = 'roteiros';
+                renderRoteiros(listaRoteiros);
+            } else if (pagina === 'galeria') {
+                document.getElementById('pagina-galeria').style.display = 'block';
+                paginaAtual = 'galeria';
+                renderGaleria(listaGaleria);
+            } else if (pagina === 'planejamento') {
+                document.getElementById('pagina-planejamento').style.display = 'block';
+                paginaAtual = 'planejamento';
+                renderHospedagens();
+            }
+            
+            // Scroll para topo da página
+            window.scrollTo(0, 0);
+        }
+
+        // ========== JavaScript anterior continua aqui ==========
+        // (Copiar todo o resto do JavaScript anterior que já estava funcionando)
+        
+        // ========================================
+        // FUNÇÃO: Alterna menu mobile
+        // ========================================
+        function alternarMenu() {
+            const menuMobile = document.getElementById('menu-mobile');
+            const botaoMenu = document.getElementById('botao-menu');
+            const icone = botaoMenu.querySelector('i');
+            
+            menuAberto = !menuAberto;
+            
+            if (menuAberto) {
+                menuMobile.classList.add('aberto');
+                icone.classList.remove('fa-bars');
+                icone.classList.add('fa-times');
+            } else {
+                menuMobile.classList.remove('aberto');
+                icone.classList.remove('fa-times');
+                icone.classList.add('fa-bars');
+            }
+        }
+
+        // ========================================
+        // DADOS E FUNÇÕES - (Mantém tudo anterior)
+        // ========================================
+        
+        const listaEventosCompleta = [
+            {id: 1, titulo: 'Feira do Calçado Infantil 2026', descricao: 'A maior feira de calçados infantis do interior paulista, com exposição de fábricas e desfiles de moda infantil.', data: '15/03/2026', horario: '09h às 18h', local: 'Centro de Eventos Birigui', endereco: 'Av. das Indústrias, 500 – Birigui-SP', empresa: 'SIMBI', ig: 'Calçado Infantil de Birigui', categoria: 'Feira', mes: 'Março'},
+            {id: 2, titulo: 'Festival Gastronômico do Tietê', descricao: 'Celebre os sabores autênticos da região com pratos à base de peixes do Rio Tietê.', data: '22 e 23/04/2026', horario: '11h às 23h', local: 'Orla do Rio Tietê', endereco: 'Parque Tietê – Birigui-SP', empresa: 'Tietê Vivo', ig: 'Sabores do Tietê', categoria: 'Festival', mes: 'Abril'},
+            {id: 3, titulo: 'Workshop de Artesanato Regional', descricao: 'Aprenda técnicas tradicionais de artesanato em couro e palha com mestres artesãos locais.', data: '05/05/2026', horario: '09h às 13h', local: 'Casa da Cultura', endereco: 'Rua da Cultura, 150 – Birigui-SP', empresa: 'Associação de Artesãos', ig: 'Artesanato do Noroeste Paulista', categoria: 'Workshop', mes: 'Maio'},
+            {id: 4, titulo: 'Corrida das Indústrias', descricao: 'Corrida de rua com percursos de 5km e 10km passando pelos principais pontos turísticos.', data: '12/06/2026', horario: '07h às 10h', local: 'Centro de Birigui', endereco: 'Praça Central – Birigui-SP', empresa: 'SIMBI', ig: 'Calçado Infantil de Birigui', categoria: 'Esporte', mes: 'Junho'},
+            {id: 5, titulo: 'Exposição: 80 Anos do Calçado', descricao: 'Uma viagem no tempo pela história da indústria calçadista de Birigui.', data: '01 a 30/07/2026', horario: '10h às 18h (seg-dom)', local: 'Museu Municipal', endereco: 'Avenida Brasil, 200 – Birigui-SP', empresa: 'Prefeitura de Birigui', ig: 'Calçado Infantil de Birigui', categoria: 'Exposição', mes: 'Julho'},
+            {id: 6, titulo: 'Semana do Meio Ambiente', descricao: 'Programação especial com trilhas ecológicas guiadas e palestras sobre sustentabilidade.', data: '05 a 11/08/2026', horario: 'Varies', local: 'Diversos locais da cidade', endereco: 'Pontos de encontro espalhados por Birigui', empresa: 'Tietê Vivo', ig: 'Sabores do Tietê', categoria: 'Sustentabilidade', mes: 'Agosto'},
+            {id: 7, titulo: 'Roda de Conversa: Histórias do Calçado', descricao: 'Encontro com empresários e artesãos que moldaram a história do calçado infantil.', data: '18/09/2026', horario: '19h às 21h', local: 'Auditório SIMBI', endereco: 'Complexo Industrial – Birigui-SP', empresa: 'SIMBI', ig: 'Calçado Infantil de Birigui', categoria: 'Encontro', mes: 'Setembro'},
+            {id: 8, titulo: 'Mercado Artesanal de Primavera', descricao: 'Grande feira de artesanato com peças exclusivas de mestres da região.', data: '22/10/2026', horario: '09h às 18h', local: 'Praça Cívica', endereco: 'Centro de Birigui – Birigui-SP', empresa: 'Associação de Artesãos', ig: 'Artesanato do Noroeste Paulista', categoria: 'Feira Artesanal', mes: 'Outubro'}
+        ];
+
+        const listaIGs = [
+            {id: 1, nome: 'Calçado Infantil de Birigui', tipo: 'Indicação de Procedência', produto: 'Calçados infantis', municipios: 'Birigui-SP', ano: '2012', numeroINPI: 'BR. 401.000.001', historia: 'Birigui consolidou-se como polo calçadista infantil nos anos 1960...', icone: 'fa-shoe-prints'},
+            {id: 2, nome: 'Artesanato do Noroeste Paulista', tipo: 'Denominação de Origem', produto: 'Artigos em couro, palha e materiais regionais', municipios: 'Birigui, Penápolis e região', ano: '2018', numeroINPI: 'BR. 401.000.002', historia: 'O artesanato tradicional do Noroeste Paulista...', icone: 'fa-hands'},
+            {id: 3, nome: 'Sabores do Tietê', tipo: 'Indicação de Procedência', produto: 'Gastronomia regional à base de peixes', municipios: 'Birigui e municípios do Rio Tietê', ano: '2020', numeroINPI: 'BR. 401.000.003', historia: 'A gastronomia do Tietê é uma tradição...', icone: 'fa-utensils'}
+        ];
+
+        const listaEmpresas = [
+            {id: 1, nome: 'Calçados Birigui Kids', categoria: 'Fábrica', ig: 'Calçado Infantil de Birigui', descricao: 'Fabricante especializada em calçados infantis com mais de 40 anos de experiência.', telefone: '(18) 3272-1500', email: 'contato@biriguikids.com.br', endereco: 'Rua Industrial, 200 - Birigui, SP', horario: 'Segunda a Sexta: 08:00 - 18:00 | Sábado: 08:00 - 12:00', icone: 'fa-shoe-prints'},
+            {id: 2, nome: 'Hotel Turismo Noroeste', categoria: 'Hotel', ig: 'Calçado Infantil de Birigui', descricao: 'Hotel de 3 estrelas localizado no centro de Birigui.', telefone: '(18) 3272-2800', email: 'reservas@htnoreste.com.br', endereco: 'Avenida Brasil, 550 - Birigui, SP', horario: 'Aberto 24 horas', icone: 'fa-hotel'},
+            {id: 3, nome: 'Restaurante Sabor Regional', categoria: 'Restaurante', ig: 'Sabores do Tietê', descricao: 'Restaurante especializado em gastronomia regional.', telefone: '(18) 3272-3100', email: 'contato@saborregional.com.br', endereco: 'Rua das Flores, 345 - Birigui, SP', horario: 'Terça a Domingo: 11:30 - 22:00 | Segunda: Fechado', icone: 'fa-utensils'},
+            {id: 4, nome: 'Agência Tietê Vivo Tours', categoria: 'Agência de Turismo', ig: 'Sabores do Tietê', descricao: 'Agência de turismo especializada em roteiros eco-turísticos.', telefone: '(18) 3272-4200', email: 'viagens@tietevivotours.com.br', endereco: 'Avenida Principal, 780 - Birigui, SP', horario: 'Segunda a Sexta: 09:00 - 18:00 | Sábado: 09:00 - 14:00', icone: 'fa-map'},
+            {id: 5, nome: 'Artesãos Birigui Store', categoria: 'Loja', ig: 'Artesanato do Noroeste Paulista', descricao: 'Loja conceito que vende artesanato autêntico da região.', telefone: '(18) 3272-5300', email: 'loja@artesaosbirigui.com.br', endereco: 'Rua Comércio, 456 - Birigui, SP', horario: 'Segunda a Sexta: 10:00 - 19:00 | Sábado: 10:00 - 17:00 | Domingo: 14:00 - 18:00', icone: 'fa-hands'},
+            {id: 6, nome: 'Calçados Premium Infantis', categoria: 'Fábrica', ig: 'Calçado Infantil de Birigui', descricao: 'Empresa Premium dedicada à fabricação de calçados infantis de alta qualidade.', telefone: '(18) 3272-6400', email: 'vendas@premiuminf.com.br', endereco: 'Parque Industrial, 100 - Birigui, SP', horario: 'Segunda a Sexta: 07:30 - 17:30', icone: 'fa-shoe-prints'},
+            {id: 7, nome: 'Pousada Ecológica Tietê', categoria: 'Hotel', ig: 'Sabores do Tietê', descricao: 'Pousada amiga do ambiente à beira do Rio Tietê.', telefone: '(18) 3272-7500', email: 'reservas@pousadatietevivo.com.br', endereco: 'Estrada do Rio Tietê, km 5 - Birigui, SP', horario: 'Aberto 24 horas | Check-in: 14h | Check-out: 11h', icone: 'fa-tree'},
+            {id: 8, nome: 'Casa das Artes Artesanato', categoria: 'Loja', ig: 'Artesanato do Noroeste Paulista', descricao: 'Espaço cultural e loja de artesanato com oficinas de aprendizagem.', telefone: '(18) 3272-8600', email: 'contato@casadasartes.com.br', endereco: 'Praça Central, 123 - Birigui, SP', horario: 'Terça a Domingo: 10:00 - 18:00 | Segunda: Fechado', icone: 'fa-palette'}
+        ];
+
+        const listaRoteiros = [
+            {
+                id: 1,
+                nome: 'Rota do Calçado Infantil',
+                descricao: 'Fábricas, museu e marcos históricos da capital do calçado infantil.',
+                ig: 'Calçado Infantil de Birigui',
+                duracao: 'Dia inteiro',
+                dificuldade: 'Fácil',
+                paradas: [
+                    { nome: 'Museu do Calçado', desc: 'Acervo histórico desde 1960 com máquinas antigas, fotos e calçados icônicos.' },
+                    { nome: 'Fábrica Birigui Kids', desc: 'Visita guiada ao processo completo de fabricação, design e controle de qualidade.' },
+                    { nome: 'Monumento ao Calçado', desc: 'Marco histórico no centro da cidade, símbolo do polo calçadista brasileiro.' }
+                ],
+                gastronomia: [
+                    { nome: 'Pastel de Frango Caipira', local: 'Mercado Municipal - Rua das Flores' },
+                    { nome: 'Queijo Artesanal Birigui', local: 'Queijaria São João - Avenida Brasil' }
+                ]
+            },
+            {
+                id: 2,
+                nome: 'Trilha Ecológica do Rio Tietê',
+                descricao: 'Caminhada pela natureza com paradas para observação de fauna e flora.',
+                ig: 'Sabores do Tietê',
+                duracao: 'Dia inteiro',
+                dificuldade: 'Moderada',
+                paradas: [
+                    { nome: 'Embarcadouro do Tietê', desc: 'Ponto de partida com vista panorâmica do rio.' },
+                    { nome: 'Área de Repouso Ecológico', desc: 'Parada para observação de pássaros e espécies nativas.' },
+                    { nome: 'Ponto de Pesca Esportiva', desc: 'Local apropriado para pesca recreativa.' }
+                ],
+                gastronomia: [
+                    { nome: 'Peixe Fresco Grelhado', local: 'Restaurante Sabor Regional - Orla do Tietê' },
+                    { nome: 'Caldo de Piranha Tradicional', local: 'Casa da Gastronomia - Centro de Birigui' }
+                ]
+            },
+            {
+                id: 3,
+                nome: 'Tour Artesanato e Gastronomia',
+                descricao: 'Descubra os mestres artesãos e sabores autênticos de Birigui.',
+                ig: 'Artesanato do Noroeste Paulista',
+                duracao: 'Meio dia',
+                dificuldade: 'Fácil',
+                paradas: [
+                    { nome: 'Atelier de Bolsas em Couro', desc: 'Conhece os mestres artesãos e o processo artesanal.' },
+                    { nome: 'Casa das Artes Artesanato', desc: 'Exposição com obras de vários artesãos.' },
+                    { nome: 'Mercado Artesanal', desc: 'Feira com produtos locais e souvenirs autênticos.' }
+                ],
+                gastronomia: [
+                    { nome: 'Doces Caseiros Artesanais', local: 'Confeitaria Casa da Avó - Praça Central' },
+                    { nome: 'Bebidas Regionais', local: 'Café da Arte - Rua do Comércio' }
+                ]
+            }
+        ];
+
+        const listaEventos = [
+            { titulo: 'Feira do Calçado Infantil 2026', descricao: 'A maior feira de calçados infantis do interior paulista.', data: '15/03/2026', local: 'Centro de Eventos', empresa: 'SIMBI' }
+        ];
+
+        const listaGastronomia = [
+            {nome: 'Caldo de Piranha', descricao: 'Receita tradicional à base de peixe fresco do Rio Tietê.', ig: 'Sabores do Tietê', local: 'Restaurantes da região'},
+            {nome: 'Moqueca de Peixe', descricao: 'Prato autêntico preparado com peixes frescos.', ig: 'Sabores do Tietê', local: 'Casa da Gastronomia'},
+            {nome: 'Pastel de Queijo Artesanal', descricao: 'Pastel crocante recheado com queijo artesanal.', ig: 'Artesanato do Noroeste Paulista', local: 'Mercado Municipal'}
+        ];
+
+        let roteirosFiltracos = [...listaRoteiros];
+        let eventosFiltrados = [...listaEventosCompleta];
+        let empresasFiltradas = [...listaEmpresas];
+        let empresaSelecionada = null;
+        let eventoSelecionado = null;
+        let menuAberto = false;
+        let paginaAtual = 'home';
+
+        // Renderiza roteiros
+        function renderRoteiros(lista) {
+            const container = document.getElementById('container-roteiros');
+            container.innerHTML = '';
+            roteirosFiltracos = lista;
+            
+            lista.forEach((roteiro) => {
+                const cardHTML = `
+                    <article class="card-hover bg-white rounded-padrao shadow-md overflow-hidden flex flex-col md:flex-row">
+                        <div class="md:w-44 h-40 md:h-auto bg-gradient-to-br from-verde to-verde/60 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-route text-5xl text-white/40"></i>
+                        </div>
+                        <div class="flex-1 p-5 flex flex-col">
+                            <h3 class="font-titulo font-bold text-azul-noite text-xl mb-2">${roteiro.nome}</h3>
+                            <p class="text-gray-600 text-sm mb-4 line-clamp-2">${roteiro.descricao}</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="inline-block bg-ambar/20 text-ambar text-xs font-bold px-3 py-1 rounded-full">${roteiro.ig}</span>
+                                <span class="inline-block bg-verde text-white text-xs font-bold px-3 py-1 rounded-full">${roteiro.dificuldade}</span>
+                                <span class="inline-block text-gray-600 text-xs font-bold px-3 py-1 bg-gray-100 rounded-full"><i class="fa-solid fa-clock text-ambar"></i> ${roteiro.duracao}</span>
+                            </div>
+                            <div class="mt-auto">
+                                <button onclick="toggleRoteiro(${roteiro.id})" class="botao-primario bg-azul-noite text-white py-2 px-4 rounded-padrao font-medium hover:bg-azul-noite/90 text-sm inline-flex items-center gap-2">
+                                    Ver roteiro <i class="fa-solid fa-chevron-down"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                    <div id="painel-roteiro-${roteiro.id}" class="painel-detalhes hidden">
+                        <div class="bg-creme p-6 rounded-padrao border-l-4 border-verde space-y-6 mb-6">
+                            <div>
+                                <h4 class="font-titulo font-bold text-azul-noite text-lg mb-4"><i class="fa-solid fa-map-pin text-ambar mr-2"></i>Paradas do Roteiro</h4>
+                                <div class="space-y-3">
+                                    ${roteiro.paradas.map(parada => `
+                                        <div class="flex gap-3 bg-white p-3 rounded-padrao">
+                                            <i class="fa-solid fa-map-pin text-ambar text-lg mt-1"></i>
+                                            <div>
+                                                <p class="font-bold text-azul-noite text-sm">${parada.nome}</p>
+                                                <p class="text-gray-600 text-xs">${parada.desc}</p>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            <div class="border-t border-gray-300 pt-4">
+                                <h4 class="font-titulo font-bold text-azul-noite text-lg mb-4"><i class="fa-solid fa-utensils text-verde mr-2"></i>Gastronomia Recomendada</h4>
+                                <div class="space-y-3">
+                                    ${roteiro.gastronomia.map(gast => `
+                                        <div class="flex gap-3 bg-white p-3 rounded-padrao">
+                                            <i class="fa-solid fa-utensils text-verde text-lg mt-1"></i>
+                                            <div>
+                                                <p class="font-bold text-azul-noite text-sm">${gast.nome}</p>
+                                                <p class="text-gray-600 text-xs">📍 ${gast.local}</p>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHTML);
+            });
+            renderGastronomia();
+            atualizarContadorRoteiros();
+        }
+
+        function renderGastronomia() {
+            const container = document.getElementById('container-gastronomia');
+            container.innerHTML = '';
+            listaGastronomia.forEach((gast) => {
+                const cardHTML = `
+                    <article class="card-hover bg-white rounded-padrao shadow-md overflow-hidden">
+                        <div class="h-28 bg-gradient-to-br from-ambar to-ambar/60 flex items-center justify-center">
+                            <i class="fa-solid fa-utensils text-4xl text-white/40"></i>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-titulo font-bold text-azul-noite text-lg mb-2">${gast.nome}</h3>
+                            <p class="text-gray-600 text-sm mb-3 line-clamp-2">${gast.descricao}</p>
+                            <div class="flex gap-2 mb-3">
+                                <span class="inline-block bg-verde/20 text-verde text-xs font-bold px-2 py-1 rounded-full">${gast.ig}</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-xs text-gray-600">
+                                <i class="fa-solid fa-location-dot text-ambar"></i>
+                                ${gast.local}
+                            </div>
+                        </div>
+                    </article>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHTML);
+            });
+        }
+
+        function toggleRoteiro(id) {
+            const painel = document.getElementById(`painel-roteiro-${id}`);
+            const botao = event.target.closest('button');
+            painel.classList.toggle('hidden');
+            if (!painel.classList.contains('hidden')) {
+                botao.innerHTML = 'Fechar roteiro <i class="fa-solid fa-chevron-up"></i>';
+            } else {
+                botao.innerHTML = 'Ver roteiro <i class="fa-solid fa-chevron-down"></i>';
+            }
+        }
+
+        function filtrarRoteiros() {
+            const ig = document.getElementById('filtro-ig-roteiros').value;
+            const duracao = document.getElementById('filtro-duracao').value;
+            const resultado = listaRoteiros.filter(roteiro => {
+                if (ig && roteiro.ig !== ig) return false;
+                if (duracao && roteiro.duracao !== duracao) return false;
+                return true;
+            });
+            renderRoteiros(resultado);
+        }
+
+        function limparFiltrosRoteiros() {
+            document.getElementById('filtro-ig-roteiros').value = '';
+            document.getElementById('filtro-duracao').value = '';
+            renderRoteiros(listaRoteiros);
+        }
+
+        function atualizarContadorRoteiros() {
+            document.getElementById('contador-roteiros').textContent = roteirosFiltracos.length;
+        }
+
+        function abrirModalSugestao() {
+            document.getElementById('modal-sugestao').classList.add('visivel');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fecharModalSugestao() {
+            document.getElementById('modal-sugestao').classList.remove('visivel');
+            document.body.style.overflow = '';
+            document.getElementById('form-sugestao').reset();
+        }
+
+        function enviarSugestao() {
+            const form = document.getElementById('form-sugestao');
+            if (!form.checkValidity()) {
+                return;
+            }
+            mostrarMensagemSucesso('Sugestão enviada com sucesso!');
+            setTimeout(() => {
+                fecharModalSugestao();
+            }, 2000);
+        }
+
+        function mostrarMensagemSucesso(mensagem) {
+            const mensagemAnterior = document.getElementById('toast-sugestao');
+            if (mensagemAnterior) mensagemAnterior.remove();
+            const toast = document.createElement('div');
+            toast.id = 'toast-sugestao';
+            toast.className = 'fixed bottom-4 right-4 bg-verde text-white px-6 py-4 rounded-padrao shadow-lg flex items-center gap-3 z-50 animate-bounce';
+            toast.innerHTML = `<i class="fa-solid fa-check-circle text-lg"></i><span>${mensagem}</span>`;
+            document.body.appendChild(toast);
+            setTimeout(() => { toast.remove(); }, 4000);
+        }
+
+        function renderizarEventos() {
+            const container = document.getElementById('container-eventos');
+            container.innerHTML = '';
+            listaEventos.forEach((evento, indice) => {
+                const cardHTML = `
+                    <article class="card-hover bg-white rounded-padrao shadow-md overflow-hidden">
+                        <div class="h-40 bg-ambar-claro flex items-center justify-center">
+                            <i class="fa-solid fa-calendar-days text-5xl text-ambar/50"></i>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-titulo font-bold text-azul-noite text-lg mb-2 line-clamp-1">${evento.titulo}</h3>
+                            <div class="flex flex-col gap-1 mb-3">
+                                <span class="text-sm text-gray-600 flex items-center gap-2">
+                                    <i class="fa-regular fa-calendar text-ambar"></i>
+                                    ${evento.data}
+                                </span>
+                                <span class="text-sm text-gray-600 flex items-center gap-2">
+                                    <i class="fa-solid fa-location-dot text-ambar"></i>
+                                    ${evento.local}
+                                </span>
+                                <span class="text-sm text-verde font-medium flex items-center gap-2">
+                                    <i class="fa-solid fa-building"></i>
+                                    ${evento.empresa}
+                                </span>
+                            </div>
+                            <button onclick="abrirModal(${indice})" class="w-full botao-primario bg-azul-noite text-white py-2 rounded-padrao font-medium hover:bg-azul-noite/90">
+                                Ver detalhes
+                            </button>
+                        </div>
+                    </article>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHTML);
+            });
+        }
+
+        function abrirModal(indice) {
+            eventoSelecionado = listaEventos[indice];
+            document.getElementById('modal-titulo').textContent = eventoSelecionado.titulo;
+            document.getElementById('modal-data').innerHTML = `<i class="fa-regular fa-calendar text-ambar"></i>${eventoSelecionado.data}`;
+            document.getElementById('modal-local').innerHTML = `<i class="fa-solid fa-location-dot text-ambar"></i>${eventoSelecionado.local}`;
+            document.getElementById('modal-empresa').innerHTML = `<i class="fa-solid fa-building mr-1"></i>${eventoSelecionado.empresa}`;
+            document.getElementById('modal-descricao').textContent = eventoSelecionado.descricao;
+            document.getElementById('modal-evento').classList.add('visivel');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fecharModal() {
+            document.getElementById('modal-evento').classList.remove('visivel');
+            document.body.style.overflow = '';
+            eventoSelecionado = null;
+        }
+
+        function renderizarIGs() {
+            const container = document.getElementById('container-igs');
+            container.innerHTML = '';
+            listaIGs.forEach((ig) => {
+                const cardHTML = `
+                    <div class="card-hover bg-white rounded-padrao shadow-md overflow-hidden border-l-4 border-azul-noite">
+                        <div class="p-5">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-14 h-14 bg-azul-noite/10 rounded-full flex items-center justify-center">
+                                    <i class="fa-solid ${ig.icone} text-2xl text-azul-noite"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-titulo font-bold text-azul-noite text-lg">${ig.nome}</h3>
+                                    <span class="inline-block text-xs font-bold px-2 py-1 rounded-full ${ig.tipo === 'Indicação de Procedência' ? 'bg-ambar/20 text-ambar' : 'bg-verde/20 text-verde'}">
+                                        ${ig.tipo === 'Indicação de Procedência' ? '<i class="fa-solid fa-map-marker-alt mr-1"></i>' : '<i class="fa-solid fa-certificate mr-1"></i>'}
+                                        ${ig.tipo}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 md:grid-cols-2 gap-4 mb-4 py-4 border-y border-gray-200">
+                                <div class="flex items-start gap-2">
+                                    <i class="fa-solid fa-industry text-ambar mt-1"></i>
+                                    <div>
+                                        <p class="text-xs text-gray-500 font-medium">Produto</p>
+                                        <p class="text-sm font-semibold text-azul-noite">${ig.produto}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <i class="fa-solid fa-map-pin text-ambar mt-1"></i>
+                                    <div>
+                                        <p class="text-xs text-gray-500 font-medium">Município</p>
+                                        <p class="text-sm font-semibold text-azul-noite">${ig.municipios}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <i class="fa-solid fa-calendar text-ambar mt-1"></i>
+                                    <div>
+                                        <p class="text-xs text-gray-500 font-medium">Reconhecimento</p>
+                                        <p class="text-sm font-semibold text-azul-noite">${ig.ano}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <i class="fa-solid fa-barcode text-ambar mt-1"></i>
+                                    <div>
+                                        <p class="text-xs text-gray-500 font-medium">INPI</p>
+                                        <p class="text-sm font-semibold text-azul-noite">${ig.numeroINPI}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <button onclick="toggleDetalhes(${ig.id})" class="w-full botao-primario bg-ambar text-azul-noite font-bold py-2 rounded-padrao hover:bg-yellow-400 mb-3">
+                                Ver história <i class="fa-solid fa-chevron-down ml-2"></i>
+                            </button>
+                            <div id="detalhes-${ig.id}" class="painel-detalhes bg-creme p-4 rounded-padrao border-l-4 border-verde">
+                                <p class="text-gray-700 text-sm leading-relaxed">${ig.historia}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHTML);
+            });
+        }
+
+        function toggleDetalhes(id) {
+            const painel = document.getElementById(`detalhes-${id}`);
+            const botao = event.target.closest('button');
+            painel.classList.toggle('aberto');
+            if (painel.classList.contains('aberto')) {
+                botao.innerHTML = 'Fechar história <i class="fa-solid fa-chevron-up ml-2"></i>';
+            } else {
+                botao.innerHTML = 'Ver história <i class="fa-solid fa-chevron-down ml-2"></i>';
+            }
+        }
+
+        function renderizarEmpresasIG() {
+            const container = document.getElementById('container-empresas');
+            container.innerHTML = '';
+            const icones = {
+                'Fábrica': 'fa-industry',
+                'Hotel': 'fa-hotel',
+                'Restaurante': 'fa-utensils',
+                'Agência de Turismo': 'fa-map',
+                'Loja': 'fa-store'
+            };
+            listaEmpresas.forEach((empresa) => {
+                const icone = icones[empresa.categoria] || 'fa-building';
+                const cardHTML = `
+                    <div class="card-hover bg-creme rounded-padrao shadow-sm hover:shadow-md p-4 text-center">
+                        <div class="flex justify-center mb-3">
+                            <div class="w-16 h-16 bg-azul-noite rounded-full flex items-center justify-center">
+                                <i class="fa-solid ${icone} text-3xl text-white"></i>
+                            </div>
+                        </div>
+                        <h4 class="font-titulo font-bold text-azul-noite text-sm mb-2">${empresa.nome}</h4>
+                        <div class="flex flex-col gap-2 mb-3">
+                            <span class="inline-block bg-verde text-white text-xs font-bold px-2 py-1 rounded-full">
+                                ${empresa.categoria}
+                            </span>
+                            <span class="inline-block bg-ambar text-azul-noite text-xs font-bold px-2 py-1 rounded-full">
+                                ${empresa.ig}
+                            </span>
+                        </div>
+                        <a href="#" onclick="abrirModalEmpresa(${empresa.id}, event)" class="text-ambar hover:text-ambar/80 font-semibold text-sm flex items-center justify-center gap-1">
+                            Ver perfil <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHTML);
+            });
+        }
+
+        function renderizarEmpresas(lista) {
+            const container = document.getElementById('container-empresas-lista');
+            container.innerHTML = '';
+            empresasFiltradas = lista;
+            lista.forEach((empresa) => {
+                const cardHTML = `
+                    <article class="card-hover bg-white rounded-padrao shadow-md overflow-hidden">
+                        <div class="h-36 bg-ambar-claro flex items-center justify-center">
+                            <i class="fa-solid ${empresa.icone} text-5xl text-azul-noite/30"></i>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-titulo font-bold text-azul-noite text-lg mb-3 line-clamp-2">${empresa.nome}</h3>
+                            <div class="flex gap-2 flex-wrap mb-4">
+                                <span class="inline-block bg-verde text-white text-xs font-bold px-2 py-1 rounded-full">${empresa.categoria}</span>
+                                <span class="inline-block bg-ambar/20 text-ambar text-xs font-bold px-2 py-1 rounded-full">${empresa.ig}</span>
+                            </div>
+                            <div class="flex flex-col gap-2 mb-4 text-sm text-gray-600">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-phone text-ambar"></i>
+                                    <span>${empresa.telefone}</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-clock text-ambar"></i>
+                                    <span class="text-xs line-clamp-1">${empresa.horario.split('|')[0]}</span>
+                                </div>
+                            </div>
+                            <button onclick="abrirModalEmpresa(${empresa.id}, event)" class="w-full botao-primario bg-azul-noite text-white py-2 rounded-padrao font-medium hover:bg-azul-noite/90">
+                                Ver perfil completo
+                            </button>
+                        </div>
+                    </article>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHTML);
+            });
+            atualizarContador();
+        }
+
+        function filtrarEmpresas() {
+            const categoria = document.getElementById('filtro-categoria').value;
+            const ig = document.getElementById('filtro-ig').value;
+            const busca = document.getElementById('filtro-busca').value.toLowerCase();
+            const resultado = listaEmpresas.filter(empresa => {
+                if (categoria && empresa.categoria !== categoria) return false;
+                if (ig && empresa.ig !== ig) return false;
+                if (busca && !empresa.nome.toLowerCase().includes(busca)) return false;
+                return true;
+            });
+            renderizarEmpresas(resultado);
+        }
+
+        function limparFiltros() {
+            document.getElementById('filtro-categoria').value = '';
+            document.getElementById('filtro-ig').value = '';
+            document.getElementById('filtro-busca').value = '';
+            renderizarEmpresas(listaEmpresas);
+        }
+
+        function atualizarContador() {
+            document.getElementById('contador-empresas').textContent = empresasFiltradas.length;
+        }
+
+        function abrirModalEmpresa(id, event) {
+            event.preventDefault();
+            empresaSelecionada = listaEmpresas.find(emp => emp.id === id);
+            if (!empresaSelecionada) return;
+            document.getElementById('modal-icon').className = `fa-solid ${empresaSelecionada.icone} text-5xl text-azul-noite`;
+            document.getElementById('modal-nome').textContent = empresaSelecionada.nome;
+            document.getElementById('modal-categoria-badge').innerHTML = `<i class="fa-solid fa-tag mr-1"></i>${empresaSelecionada.categoria}`;
+            document.getElementById('modal-ig-badge').textContent = empresaSelecionada.ig;
+            document.getElementById('modal-descricao').textContent = empresaSelecionada.descricao;
+            const telefoneLimpo = empresaSelecionada.telefone.replace(/[^0-9-]/g, '');
+            document.getElementById('modal-telefone').href = `tel:+55${telefoneLimpo}`;
+            document.getElementById('modal-telefone').textContent = empresaSelecionada.telefone;
+            document.getElementById('modal-email').href = `mailto:${empresaSelecionada.email}`;
+            document.getElementById('modal-email').textContent = empresaSelecionada.email;
+            document.getElementById('modal-endereco').textContent = empresaSelecionada.endereco;
+            document.getElementById('modal-horario').textContent = empresaSelecionada.horario;
+            document.getElementById('modal-empresa').classList.add('visivel');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fecharModalEmpresa() {
+            document.getElementById('modal-empresa').classList.remove('visivel');
+            document.body.style.overflow = '';
+            empresaSelecionada = null;
+        }
+
+        function renderizarEventosPagina(lista) {
+            const container = document.getElementById('container-eventos-lista');
+            container.innerHTML = '';
+            eventosFiltrados = lista;
+            lista.forEach((evento) => {
+                const cardHTML = `
+                    <article class="card-hover bg-white rounded-padrao shadow-md overflow-hidden">
+                        <div class="h-40 bg-gradient-to-br from-ambar to-ambar/60 flex items-center justify-center relative">
+                            <i class="fa-solid fa-calendar-alt text-5xl text-white/40"></i>
+                            <span class="absolute top-3 right-3 bg-azul-noite text-white text-xs font-bold px-3 py-1 rounded-full">
+                                ${evento.categoria}
+                            </span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-titulo font-bold text-azul-noite text-lg mb-3 line-clamp-2">${evento.titulo}</h3>
+                            <div class="flex flex-col gap-3 mb-4 text-sm text-gray-600">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-regular fa-calendar text-ambar"></i>
+                                    <span><strong>${evento.data}</strong> - ${evento.horario}</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-map-marker-alt text-ambar"></i>
+                                    <span>${evento.local}</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-building text-ambar"></i>
+                                    <span>${evento.empresa}</span>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <span class="inline-block bg-ambar/20 text-ambar text-xs font-bold px-2 py-1 rounded-full">
+                                    ${evento.ig}
+                                </span>
+                            </div>
+                            <button onclick="abrirModalEventoPagina(${evento.id}, event)" class="w-full botao-primario bg-azul-noite text-white py-2 rounded-padrao font-medium hover:bg-azul-noite/90">
+                                Ver detalhes
+                            </button>
+                        </div>
+                    </article>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHTML);
+            });
+            atualizarContadorEventos();
+        }
+
+        function filtrarEventos() {
+            const mes = document.getElementById('filtro-mes').value;
+            const ig = document.getElementById('filtro-ig-eventos').value;
+            const busca = document.getElementById('filtro-busca-eventos').value.toLowerCase();
+            const resultado = listaEventosCompleta.filter(evento => {
+                if (mes && evento.mes !== mes) return false;
+                if (ig && evento.ig !== ig) return false;
+                if (busca && !evento.titulo.toLowerCase().includes(busca)) return false;
+                return true;
+            });
+            renderizarEventosPagina(resultado);
+        }
+
+        function limparFiltrosEventos() {
+            document.getElementById('filtro-mes').value = '';
+            document.getElementById('filtro-ig-eventos').value = '';
+            document.getElementById('filtro-busca-eventos').value = '';
+            renderizarEventosPagina(listaEventosCompleta);
+        }
+
+        function atualizarContadorEventos() {
+            document.getElementById('contador-eventos-pagina').textContent = eventosFiltrados.length;
+        }
+
+        function abrirModalEventoPagina(id, event) {
+            event.preventDefault();
+            eventoSelecionado = listaEventosCompleta.find(evt => evt.id === id);
+            if (!eventoSelecionado) return;
+            document.getElementById('modal-evento-categoria').textContent = eventoSelecionado.categoria;
+            document.getElementById('modal-evento-ig').textContent = eventoSelecionado.ig;
+            document.getElementById('modal-evento-titulo').textContent = eventoSelecionado.titulo;
+            document.getElementById('modal-evento-data-hora').textContent = `${eventoSelecionado.data} - ${eventoSelecionado.horario}`;
+            document.getElementById('modal-evento-local').textContent = eventoSelecionado.local;
+            document.getElementById('modal-evento-endereco').textContent = eventoSelecionado.endereco;
+            document.getElementById('modal-evento-empresa').textContent = eventoSelecionado.empresa;
+            document.getElementById('modal-evento-descricao').textContent = eventoSelecionado.descricao;
+            document.getElementById('modal-evento-pagina').classList.add('visivel');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fecharModalEventoPagina() {
+            document.getElementById('modal-evento-pagina').classList.remove('visivel');
+            document.body.style.overflow = '';
+            eventoSelecionado = null;
+        }
+
+        // Event listeners
+        document.getElementById('modal-evento').addEventListener('click', function(evento) {
+            if (evento.target === this) fecharModal();
+        });
+        document.getElementById('modal-empresa').addEventListener('click', function(evento) {
+            if (evento.target === this) fecharModalEmpresa();
+        });
+        document.getElementById('modal-evento-pagina').addEventListener('click', function(evento) {
+            if (evento.target === this) fecharModalEventoPagina();
+        });
+        document.getElementById('modal-sugestao').addEventListener('click', function(evento) {
+            if (evento.target === this) fecharModalSugestao();
+        });
+        document.getElementById('modal-galeria').addEventListener('click', function(evento) {
+            if (evento.target === this) fecharFotoGaleria();
+        });
+
+        document.addEventListener('keydown', function(evento) {
+            if (evento.key === 'Escape') {
+                if (document.getElementById('modal-evento').classList.contains('visivel')) fecharModal();
+                if (document.getElementById('modal-empresa').classList.contains('visivel')) fecharModalEmpresa();
+                if (document.getElementById('modal-evento-pagina').classList.contains('visivel')) fecharModalEventoPagina();
+                if (document.getElementById('modal-sugestao').classList.contains('visivel')) fecharModalSugestao();
+                if (document.getElementById('modal-galeria').classList.contains('visivel')) fecharFotoGaleria();
+            }
+        });
+
+        document.querySelectorAll('#menu-mobile a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (menuAberto) alternarMenu();
+            });
+        });
+
+        // Element SDK
+        async function atualizarInterface(config) {
+            const nomeSite = document.getElementById('nome-site');
+            if (nomeSite) nomeSite.textContent = config.site_title || configuracaoPadrao.site_title;
+            const tituloHero = document.getElementById('titulo-hero');
+            if (tituloHero) tituloHero.textContent = config.hero_title || configuracaoPadrao.hero_title;
+            const subtituloHero = document.getElementById('subtitulo-hero');
+            if (subtituloHero) subtituloHero.textContent = config.hero_subtitle || configuracaoPadrao.hero_subtitle;
+            const sloganFooter = document.getElementById('slogan-footer');
+            if (sloganFooter) sloganFooter.textContent = config.slogan || configuracaoPadrao.slogan;
+            if (config.cor_primaria) document.documentElement.style.setProperty('--cor-primaria', config.cor_primaria);
+            if (config.cor_destaque) document.documentElement.style.setProperty('--cor-destaque', config.cor_destaque);
+            if (config.familia_fonte) document.body.style.fontFamily = `${config.familia_fonte}, Lato, sans-serif`;
+            if (config.tamanho_fonte) document.documentElement.style.fontSize = `${config.tamanho_fonte}px`;
+        }
+
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig: configuracaoPadrao,
+                onConfigChange: atualizarInterface,
+                mapToCapabilities: (config) => ({
+                    recolorables: [
+                        {
+                            get: () => config.cor_fundo || configuracaoPadrao.cor_fundo,
+                            set: (valor) => window.elementSdk.setConfig({ cor_fundo: valor })
+                        },
+                        {
+                            get: () => config.cor_primaria || configuracaoPadrao.cor_primaria,
+                            set: (valor) => window.elementSdk.setConfig({ cor_primaria: valor })
+                        },
+                        {
+                            get: () => config.cor_texto || configuracaoPadrao.cor_texto,
+                            set: (valor) => window.elementSdk.setConfig({ cor_texto: valor })
+                        },
+                        {
+                            get: () => config.cor_destaque || configuracaoPadrao.cor_destaque,
+                            set: (valor) => window.elementSdk.setConfig({ cor_destaque: valor })
+                        },
+                        {
+                            get: () => config.cor_secundaria || configuracaoPadrao.cor_secundaria,
+                            set: (valor) => window.elementSdk.setConfig({ cor_secundaria: valor })
+                        }
+                    ],
+                    borderables: [],
+                    fontEditable: {
+                        get: () => config.familia_fonte || configuracaoPadrao.familia_fonte,
+                        set: (valor) => window.elementSdk.setConfig({ familia_fonte: valor })
+                    },
+                    fontSizeable: {
+                        get: () => config.tamanho_fonte || configuracaoPadrao.tamanho_fonte,
+                        set: (valor) => window.elementSdk.setConfig({ tamanho_fonte: valor })
+                    }
+                }),
+                mapToEditPanelValues: (config) => new Map([
+                    ['site_title', config.site_title || configuracaoPadrao.site_title],
+                    ['hero_title', config.hero_title || configuracaoPadrao.hero_title],
+                    ['hero_subtitle', config.hero_subtitle || configuracaoPadrao.hero_subtitle],
+                    ['slogan', config.slogan || configuracaoPadrao.slogan]
+                ])
+            });
+        }
+
+        // Inicialização
+        window.addEventListener('load', function() {
+            renderizarEventos();
+            renderizarEventosPagina(listaEventosCompleta);
+            renderRoteiros(listaRoteiros);
+            renderGaleria(listaGaleria);
+            renderHospedagens();
+            atualizarInterface(configuracaoPadrao);
+        });
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9da56461e320df24',t:'MTc3MzE3NzkyOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
 
